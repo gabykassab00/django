@@ -4,5 +4,5 @@ from rest_framework.response import Response
 
 class Registerapiview(APIView):
     def post(self,request):
-        return Response('hello')
+        return Response(request.data)
     
