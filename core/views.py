@@ -39,8 +39,11 @@ class Loginapiview(APIView):
         access_token = create_access_token(user.id)
         refresh_token = create_refresh_token(user.id)
         
+        response = Response()        
         
-        serializer = Userserializer(user)
-        
-        return Response(serializer.data)
+        response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
+        response.data ={
+            "token":access_token
+        }
+        return response
     
