@@ -5,7 +5,7 @@ from rest_framework import exceptions
 from .serializers import Userserializer
 from .models import Users
 from .authentication import create_access_token,create_refresh_token
-
+from rest_framework.authentication import get_authorization_header
 class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
@@ -49,5 +49,6 @@ class Loginapiview(APIView):
     
     
 class Userapiview(APIView):
-    def get(self):
-        pass
+    def get(self,request):
+        auth = get_authorization_header(request).split()
+        return Response(auth)
