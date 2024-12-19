@@ -1,7 +1,8 @@
 import jwt,datetime
 from rest_framework import exceptions
-from rest_framework.authentication import BaseAuthentication
-
+from rest_framework.authentication import BaseAuthentication,get_authorization_header
+from core.models import Users
+from .serializers import Userserializer
 class Jwtauthentication(BaseAuthentication):
     def authenticate(self,request):
                 auth = get_authorization_header(request).split()
@@ -12,9 +13,7 @@ class Jwtauthentication(BaseAuthentication):
                         
                         user = Users.objects.get(pk=id)
                         
-                        if user:
-                            serializer = Userserializer(user)
-                            return Response(serializer.data)
+                        return user 
                         
                     
                     
