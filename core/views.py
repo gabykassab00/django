@@ -44,7 +44,7 @@ class Loginapiview(APIView):
         Usertoken.objects.create(
             user_id=user.id,
             token=refresh_token,
-            expired_at=datetime.datetime.utcnow()+ datetime.timedelta(days=7)
+            expired_at=datetime.datetime.utcnow() + datetime.timedelta(days=7)
         )
         
         
@@ -85,7 +85,11 @@ class Refreshapiview(APIView):
         
 class Logoutapiview(APIView):
     def post (self,request):
-        Usertoken.objects.filter(user_id=request.user.id).delete()
+        
+        refresh_token = request.COOKIES.get('refresh_token')
+        Usertoken.objects.filter(token=refresh_token).delete()        
+        
+        
         response = Response()
         response.delete_cookie(key='refresh_token')
         response.data = {
