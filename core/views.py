@@ -50,18 +50,4 @@ class Loginapiview(APIView):
     
 class Userapiview(APIView):
     def get(self,request):
-        auth = get_authorization_header(request).split()
-        
-        if auth and len(auth) == 2 :
-            token = auth[1].decode('utf-8')
-            id = decode_access_token(token)
-            
-            user = Users.objects.get(pk=id)
-            
-            if user:
-                serializer = Userserializer(user)
-                return Response(serializer.data)
-            
-        
-        
-        raise exceptions.AuthenticationFailed('unathenticated')
+        pass
