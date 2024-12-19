@@ -18,3 +18,8 @@ class Registerapiview(APIView):
         serializer.save()
         return Response(serializer.data)
     
+
+class Loginapiview(APIView):
+    def post(self,request):
+        pass
+    
