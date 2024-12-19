@@ -99,7 +99,7 @@ class Logoutapiview(APIView):
         return response
     
     
-class Resetapiview(APIView):
+class Forgotapiview(APIView):
     def post(self,request):
         email = request.data['email']
         token = ''.join(random.choice(string.ascii_lowercase+string.digits) for _ in range(10))
@@ -109,7 +109,7 @@ class Resetapiview(APIView):
             token=token
         )
         
-        url = 'http://localhost:3000/reset/' + token
+        url = 'http://localhost:3000/forgot/' + token
         
         send_mail(
             subject='Reset your password',
