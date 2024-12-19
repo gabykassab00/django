@@ -13,7 +13,7 @@ class Jwtauthentication(BaseAuthentication):
                         
                         user = Users.objects.get(pk=id)
                         
-                        return user 
+                        return (user,None) 
                         
                     
                     

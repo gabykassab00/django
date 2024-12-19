@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from .serializers import Userserializer
 from .models import Users
-from .authentication import create_access_token,create_refresh_token,decode_access_token
+from .authentication import create_access_token,create_refresh_token,decode_access_token,Jwtauthentication
 from rest_framework.authentication import get_authorization_header
 class Registerapiview(APIView):
     def post(self,request):
@@ -49,5 +49,6 @@ class Loginapiview(APIView):
     
     
 class Userapiview(APIView):
+    authentication_classes = [Jwtauthentication]
     def get(self,request):
-        pass
+        return Response(Userserializer(request.user).data)
