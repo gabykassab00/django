@@ -69,6 +69,13 @@ class Refreshapiview(APIView):
         
         id = decode_refresh_token(refresh_token)
         
+        if not Usertoken.objects.filter(
+            user_id=id,
+            token=refresh_token,
+            expired_at__gt=datetime.datetime.now(tz=datetime.timezone.utc)
+        ).exists():
+            raise exceptions.AuthenticationFailed('unauthenticated')
+        
         access_token = create_access_token(id)
         
         
