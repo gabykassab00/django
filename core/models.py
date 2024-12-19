@@ -9,7 +9,7 @@ class Users(AbstractUser):
     REQUIRED_FIELDS=[]
     
     
-class usertoken(models.Model):
+class Usertoken(models.Model):
     user_id = models.IntegerField()
     token=models.CharField(max_length=255)
     created_at=models.DateTimeField(auto_now_add=True)

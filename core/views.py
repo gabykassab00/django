@@ -3,9 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import exceptions
 from .serializers import Userserializer
-from .models import Users
+from .models import Users,Usertoken
 from .authentication import create_access_token,create_refresh_token,decode_access_token,Jwtauthentication,decode_refresh_token
 from rest_framework.authentication import get_authorization_header
+import datetime
 class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
@@ -38,6 +39,14 @@ class Loginapiview(APIView):
         
         access_token = create_access_token(user.id)
         refresh_token = create_refresh_token(user.id)
+        
+        
+        Usertoken.objects.create(
+            user_id=user.id,
+            token=refresh_token,
+            expired_at=datetime.datetime.utcnow()+ datetime.timedelta(days=7)
+        )
+        
         
         response = Response()        
         
