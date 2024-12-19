@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from .serializers import Userserializer
 from .models import Users
-from .authentication import create_access_token,create_refresh_token,decode_access_token,Jwtauthentication
+from .authentication import create_access_token,create_refresh_token,decode_access_token,Jwtauthentication,decode_refresh_token
 from rest_framework.authentication import get_authorization_header
 class Registerapiview(APIView):
     def post(self,request):
@@ -58,4 +58,11 @@ class Refreshapiview(APIView):
     def post(self,request):
         refresh_token = request.COOKIES.get('refresh_token')
         
-        return Response(refresh_token)
+        id = decode_refresh_token(refresh_token)
+        
+        access_token = create_access_token(id)
+        
+        
+        return Response({
+            'token':access_token
+        })
