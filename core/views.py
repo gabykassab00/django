@@ -96,3 +96,8 @@ class Logoutapiview(APIView):
             'message':'sucess'
         }
         return response
+    
+    
+class Resetapiview(APIView):
+    def post(self,request):
+        pass
