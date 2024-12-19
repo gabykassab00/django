@@ -66,3 +66,7 @@ class Refreshapiview(APIView):
         return Response({
             'token':access_token
         })
+        
+class Logoutapiview(APIView):
+    def post (self,request):
+        pass
