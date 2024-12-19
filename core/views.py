@@ -52,3 +52,10 @@ class Userapiview(APIView):
     authentication_classes = [Jwtauthentication]
     def get(self,request):
         return Response(Userserializer(request.user).data)
+    
+
+class Refreshapiview(APIView):
+    def post(self,request):
+        refresh_token = request.COOKIES.get('refresh_token')
+        
+        return Response(refresh_token)
