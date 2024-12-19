@@ -7,6 +7,7 @@ from .models import Users,Usertoken,Reset
 from .authentication import create_access_token,create_refresh_token,decode_access_token,Jwtauthentication,decode_refresh_token
 from rest_framework.authentication import get_authorization_header
 import datetime,random,string
+from django.core.mail import send_mail
 class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
@@ -105,6 +106,10 @@ class Resetapiview(APIView):
         Reset.objects.create(
             email=request.data['email'],
             token=token
+        )
+        
+        send_mail(
+            
         )
         
         return Response ({
