@@ -121,3 +121,7 @@ class Forgotapiview(APIView):
         return Response ({
             'message':'success'
         })
+        
+class Resetapiview(APIView):
+    def post(self,request):
+        pass
