@@ -29,4 +29,8 @@ class Loginapiview(APIView):
         
         if user is None:
             raise exceptions.AuthenticationFailed('invalid credentials')
+        
+        
+        if not user.check_password(password):
+            raise exceptions.AuthenticationFailed('invalid credentials')
     
