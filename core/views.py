@@ -85,6 +85,7 @@ class Refreshapiview(APIView):
         
 class Logoutapiview(APIView):
     def post (self,request):
+        Usertoken.objects.filter(user_id=request.user.id).delete()
         response = Response()
         response.delete_cookie(key='refresh_token')
         response.data = {
