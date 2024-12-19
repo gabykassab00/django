@@ -51,4 +51,8 @@ class Loginapiview(APIView):
 class Userapiview(APIView):
     def get(self,request):
         auth = get_authorization_header(request).split()
+        
+        if auth and len(auth) == 2 :
+            token = auth[1].decode('utf-8')
+        
         return Response(auth)
