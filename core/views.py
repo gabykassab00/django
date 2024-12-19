@@ -3,10 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import exceptions
 from .serializers import Userserializer
-from .models import Users,Usertoken
+from .models import Users,Usertoken,Reset
 from .authentication import create_access_token,create_refresh_token,decode_access_token,Jwtauthentication,decode_refresh_token
 from rest_framework.authentication import get_authorization_header
-import datetime
+import datetime,random,string
 class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
@@ -100,4 +100,13 @@ class Logoutapiview(APIView):
     
 class Resetapiview(APIView):
     def post(self,request):
-        pass
+        token = ''.join(random.choice(string.ascii_lowercase+string.digits) for _ in range(10))
+        
+        Reset.objects.create(
+            email=request.data['email'],
+            token=token
+        )
+        
+        return Response ({
+            'message':'success'
+        })
