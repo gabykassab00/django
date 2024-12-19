@@ -101,6 +101,7 @@ class Logoutapiview(APIView):
     
 class Resetapiview(APIView):
     def post(self,request):
+        email = request.data['email']
         token = ''.join(random.choice(string.ascii_lowercase+string.digits) for _ in range(10))
         
         Reset.objects.create(
@@ -108,8 +109,13 @@ class Resetapiview(APIView):
             token=token
         )
         
+        url = 'http://localhost:3000/reset/' + token
+        
         send_mail(
-            
+            subject='Reset your password',
+            message='click <a href= "%s">here</a> to reset your password' % url,
+            from_email='from@example.com',
+            recipient_list=[email]
         )
         
         return Response ({
