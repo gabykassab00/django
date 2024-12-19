@@ -33,4 +33,9 @@ class Loginapiview(APIView):
         
         if not user.check_password(password):
             raise exceptions.AuthenticationFailed('invalid credentials')
+        
+        
+        serializer = Userserializer(user)
+        
+        return Response(serializer.data)
     
