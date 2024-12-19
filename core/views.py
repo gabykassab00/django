@@ -124,4 +124,26 @@ class Forgotapiview(APIView):
         
 class Resetapiview(APIView):
     def post(self,request):
-        pass
+        data = request.data 
+        
+        if data['password'] !=data['password_confirm']:
+            raise exceptions.APIException('password do not match')
+        
+        
+        reset_password = Reset.objects.filter(token=data['token']).first()
+        
+        
+        if not reset_password:
+            raise exceptions.APIException('invalid link')
+        
+        user = Users.objects.filter(email=reset_password.email).first()
+        
+        if not user:
+            raise exceptions.APIException('user not found !')
+        
+        user.set_password(data['password'])
+        user.save()
+        
+        return Response({
+            'message':'success'
+        })
