@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from .serializers import Userserializer
 from .models import Users
-from .authentication import create_access_token,create_refresh_token
+from .authentication import create_access_token,create_refresh_token,decode_access_token
 from rest_framework.authentication import get_authorization_header
 class Registerapiview(APIView):
     def post(self,request):
@@ -54,5 +54,14 @@ class Userapiview(APIView):
         
         if auth and len(auth) == 2 :
             token = auth[1].decode('utf-8')
+            id = decode_access_token(token)
+            
+            user = Users.objects.get(pk=id)
+            
+            if user:
+                serializer = Userserializer(user)
+                return Response(serializer.data)
+            
         
-        return Response(auth)
+        
+        raise exceptions.AuthenticationFailed('unathenticated')
