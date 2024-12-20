@@ -169,3 +169,14 @@ class Googleauthapiview(APIView):
             user=Users.objects.create(
                 email=googleuser['email']
             )
+            user.set_password(token)
+            user.save()
+            
+            access_token = create_access_token(user.id)
+            refresh_token = create_refresh_token(user.id)
+            
+            Usertoken.objects.create(
+                user_id=user.id,
+                token=refresh_token,
+                expired_at=datetime.datetime.utcnow()+ datetime.timedelta(days=7)
+            )
