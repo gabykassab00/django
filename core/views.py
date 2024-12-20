@@ -8,6 +8,10 @@ from .authentication import create_access_token,create_refresh_token,decode_acce
 from rest_framework.authentication import get_authorization_header
 import datetime,random,string
 from django.core.mail import send_mail
+from google.oauth2 import id_token
+from google.auth.transport.requests import Request as googlereq
+
+
 class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
