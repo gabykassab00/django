@@ -154,4 +154,10 @@ class Resetapiview(APIView):
         
 class Googleauthapiview(APIView):
     def post(self,request):
-        pass
+        token=request.data['token']
+        
+        
+        googleuser = id_token.verify_token(token,googlereq())
+        
+        if not googleuser:
+            raise exceptions.AuthenticationFailed('unanthicated')
