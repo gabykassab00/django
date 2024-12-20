@@ -180,3 +180,10 @@ class Googleauthapiview(APIView):
                 token=refresh_token,
                 expired_at=datetime.datetime.utcnow()+ datetime.timedelta(days=7)
             )
+            
+            response = Response()
+            response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
+            response.data ={
+                'token':access_token
+            }
+            return response
