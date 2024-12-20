@@ -161,3 +161,11 @@ class Googleauthapiview(APIView):
         
         if not googleuser:
             raise exceptions.AuthenticationFailed('unanthicated')
+        
+        
+        user = Users.objects.filter(email=googleuser['email']).first()
+        
+        if not user :
+            user=Users.objects.create(
+                email=googleuser['email']
+            )
