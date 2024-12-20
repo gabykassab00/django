@@ -147,3 +147,7 @@ class Resetapiview(APIView):
         return Response({
             'message':'success'
         })
+        
+class Googleauthapiview(APIView):
+    def post(self,request):
+        pass
