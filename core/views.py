@@ -16,6 +16,8 @@ class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
         
+        # print(f"Received data: {data}")
+        
         if data['password'] != data['password_confirm']:
             raise exceptions.APIException('passwords do not match')
         
@@ -27,6 +29,9 @@ class Registerapiview(APIView):
 
 class Loginapiview(APIView):
     def post(self,request):
+        print(f"Request data: {request.data}")
+        
+
         email  =request.data['email']
         password = request.data['password']
         
@@ -39,6 +44,7 @@ class Loginapiview(APIView):
         
         if not user.check_password(password):
             raise exceptions.AuthenticationFailed('invalid credentials')
+        
         
         
         
@@ -156,6 +162,13 @@ class Googleauthapiview(APIView):
     def post(self,request):
         token=request.data['token']
         
+        if not token:
+            return Response({'error':'token is required'})
+        
+        try :
+            google_user = id_token.verify_token(token,googlereq())
+        except:
+            return Response({'error':'invalid google token'})
         
         googleuser = id_token.verify_token(token,googlereq())
         
@@ -184,6 +197,9 @@ class Googleauthapiview(APIView):
             response = Response()
             response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
             response.data ={
-                'token':access_token
+                'token':access_token,
+                'message':'user logged in sucessfully',
+                'user_email':user.email
             }
             return response
+        
