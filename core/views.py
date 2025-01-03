@@ -160,46 +160,42 @@ class Resetapiview(APIView):
         
 class Googleauthapiview(APIView):
     def post(self,request):
-        token=request.data['token']
-        
+        token = request.data.get('token')
         if not token:
-            return Response({'error':'token is required'})
+            return Response({'error':'token is required'},status=400)
         
         try :
             google_user = id_token.verify_token(token,googlereq())
-        except:
+        except ValueError:
             return Response({'error':'invalid google token'})
-        
-        googleuser = id_token.verify_token(token,googlereq())
-        
-        if not googleuser:
-            raise exceptions.AuthenticationFailed('unanthicated')
-        
-        
-        user = Users.objects.filter(email=googleuser['email']).first()
+                
+        user = Users.objects.filter(email=google_user['email']).first()
         
         if not user :
             user=Users.objects.create(
-                email=googleuser['email']
+                email=google_user['email']
             )
             user.set_password(token)
             user.save()
             
-            access_token = create_access_token(user.id)
-            refresh_token = create_refresh_token(user.id)
+        access_token = create_access_token(user.id)
+        refresh_token = create_refresh_token(user.id)
             
-            Usertoken.objects.create(
+        Usertoken.objects.update_or_create(
                 user_id=user.id,
-                token=refresh_token,
-                expired_at=datetime.datetime.utcnow()+ datetime.timedelta(days=7)
-            )
+                defaults={
+                'token':refresh_token,
+                'expired_at':datetime.datetime.utcnow()+ datetime.timedelta(days=7),
+                }
+        )
             
-            response = Response()
-            response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
-            response.data ={
+        response = Response()
+        response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
+        response.data ={
                 'token':access_token,
                 'message':'user logged in sucessfully',
                 'user_email':user.email
             }
-            return response
+        return response
+    
         
