@@ -83,7 +83,7 @@ class Tracker:
             
         return  tracks        
         
-    def draw_ellipse(self,frame,bbox,color,track_id):
+    def draw_ellipse(self,frame,bbox,color,track_id=None):
         y2 = int(bbox[3])
         x_center,_ = get_center_of_bbox(bbox)
         width= get_bbox_width(bbox)
@@ -136,8 +136,8 @@ class Tracker:
                 
             #draw referee 
             
-            for track_id , referee in referee_dict.items():
-                frame=self.draw_ellipse(frame,referee["bbox"],(0,255,255),track_id)
+            for _, referee in referee_dict.items():
+                frame=self.draw_ellipse(frame,referee["bbox"],(0,255,255))
                 
             output_video_frames.append(frame)
             
