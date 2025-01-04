@@ -2,6 +2,9 @@ from ultralytics import YOLO
 import supervision as sv
 import pickle
 import os
+import sys 
+sys.path.append('../')
+from utils.bbox_utils import get_center_of_bbox,get_bbox_width
 class Tracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
