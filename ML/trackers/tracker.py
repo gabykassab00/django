@@ -19,6 +19,13 @@ class Tracker:
         
         detections=self.detect_frames(frames)
         
+        tracks ={
+           "players":[] ,
+           "referees":[],
+           "ball":[],
+        }
+        
+        
         for frame_num , detection in enumerate(detections):
             cls_names = detection.names
             cls_names_inv = {value:key for key,value in cls_names.items()}
@@ -35,7 +42,13 @@ class Tracker:
                     
             #track object
             detection_with_tracks = self.tracker.update_with_detections(detection_supervision)
+            
+            tracks["players"].append({})
+            tracks["referees"].append({})
+            tracks["ball"].append({})
+            
+            for frame
+            
             print(detection_supervision)
             
-            break
         
