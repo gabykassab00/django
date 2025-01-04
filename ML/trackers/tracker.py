@@ -98,8 +98,14 @@ class Tracker:
             color=color,
             thickness=2,
             lineType=cv2.LINE_4
-            
         )
+        
+        rectangle_width = 40 
+        rectangle_height = 20 
+        x1_rect = x_center - rectangle_height//2
+        x2_rect = x_center + rectangle_height//2
+        y1_rect = (y2- rectangle_height//2) +15
+        
         return frame
         
         
@@ -121,7 +127,7 @@ class Tracker:
                 
             #draw referee 
             
-            for track_id , referee in player_dict.items():
+            for track_id , referee in referee_dict.items():
                 frame=self.draw_ellipse(frame,referee["bbox"],(0,255,255),track_id)
                 
             output_video_frames.append(frame)
