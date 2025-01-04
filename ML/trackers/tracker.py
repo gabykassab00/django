@@ -54,6 +54,9 @@ class Tracker:
                 
                 if class_id == cls_names_inv['player']:
                     tracks["players"][frame_num][track_id] = {"bbox":bbox}
+                
+                if class_id == cls_names_inv['referee']:
+                    tracks["referees"][frame_num][track_id] = {"bbox":bbox}
             
             print(detection_supervision)
             
