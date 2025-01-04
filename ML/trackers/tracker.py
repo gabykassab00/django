@@ -156,6 +156,12 @@ class Tracker:
             for _, referee in referee_dict.items():
                 frame=self.draw_ellipse(frame,referee["bbox"],(0,255,255))
                 
+                
+            #draw ball
+            
+            for track_id,ball in ball_dict.items():
+                frame = self.draw_triangle(frame,ball["bbox"],(0,255,0))
+                
             output_video_frames.append(frame)
             
         return output_video_frames
