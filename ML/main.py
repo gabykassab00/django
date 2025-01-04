@@ -8,4 +8,4 @@ def main():
     save_video(video_frames,'ML/output_videos/video_result.avi')
     
 if __name__ == "__main__":
-    main()
+    main() 
