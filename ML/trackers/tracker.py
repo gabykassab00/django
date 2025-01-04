@@ -79,7 +79,7 @@ class Tracker:
             
         return  tracks        
         
-    
+    def draw_ellipse(self,frame,bbox,color,track_id):
     
     def draw_annotations(self,video_frames,tracks):
         output_video_frames = []
@@ -89,3 +89,8 @@ class Tracker:
             player_dict = tracks["players"][frame_num]
             ball_dict = tracks["ball"][frame_num]
             referee_dict=tracks["referees"][frame_num]
+            
+            #draw players 
+            
+            for track_id , player in player_dict.items():
+                frame=self.draw_ellipse(frame,player["bbox"],(0,0,255),track_id)
