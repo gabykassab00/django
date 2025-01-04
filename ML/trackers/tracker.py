@@ -5,6 +5,7 @@ import os
 import sys 
 sys.path.append('../')
 from utils.bbox_utils import get_center_of_bbox,get_bbox_width
+import cv2
 class Tracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
@@ -84,7 +85,12 @@ class Tracker:
         
     def draw_ellipse(self,frame,bbox,color,track_id):
         y2 = int(bbox[3])
-        x2 = 
+        x_center,_ = get_center_of_bbox(bbox)
+        width= get_bbox_width(bbox)
+        
+        cv2.ellipse()
+        
+        
         
     def draw_annotations(self,video_frames,tracks):
         output_video_frames = []
