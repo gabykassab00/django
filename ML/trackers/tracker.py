@@ -51,6 +51,9 @@ class Tracker:
                 bbox = frame_detection[0].tolist()
                 class_id = frame_detection[3]
                 track_id = frame_detection[4]
+                
+                if class_id == cls_names_inv['player']:
+                    tracks["players"][frame_num][track_id] = {"bbox":bbox}
             
             print(detection_supervision)
             
