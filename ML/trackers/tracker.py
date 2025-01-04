@@ -116,6 +116,11 @@ class Tracker:
             cv2.putText(frame,f"{track_id}",(int(x1_text),int(y1_rect+15)),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0,0,0),2)
         
         return frame
+    
+    
+    
+    def draw_triangle(self,frame,bbox,color):
+        
         
         
         
