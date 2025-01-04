@@ -79,3 +79,10 @@ class Tracker:
             
         return  tracks        
         
+    
+    
+    def draw_annotations(self,video_frames,tracks):
+        output_video_frames = []
+        for frame_num,frame in enumerate(video_frames):
+            frame = frame.copy()
+            
