@@ -47,7 +47,10 @@ class Tracker:
             tracks["referees"].append({})
             tracks["ball"].append({})
             
-            for frame
+            for frame_detection in detection_with_tracks:
+                bbox = frame_detection[0].tolist()
+                class_id = frame_detection[3]
+                track_id = frame_detection[4]
             
             print(detection_supervision)
             
