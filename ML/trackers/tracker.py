@@ -124,7 +124,12 @@ class Tracker:
         y=int(bbox[1])
         x,_= get_center_of_bbox(bbox)
         
-        triangle_points = np
+        triangle_points = np.array([
+            [x,y],
+            [x-10,y-20],
+            [x+10,y-20],
+        ])
+        cv2.drawContours(frame,[triangle_points],0,color,cv2.FILLED)
         
         
         
