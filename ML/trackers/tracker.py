@@ -22,7 +22,6 @@ class Tracker:
         for frame_num , detection in enumerate(detections):
             cls_names = detection.names
             cls_names_inv = {value:key for key,value in cls_names.items()}
-            print(cls_names)
             #convert to supervision detection format 
             detection_supervision = sv.Detections.from_ultralytics(detection)
             
@@ -31,7 +30,7 @@ class Tracker:
             
             for object_ind , class_id in enumerate(detection_supervision.class_id):
                 if cls_names[class_id] == "goalkeeper":
-            
+                    detection_supervision.class_id[object_ind] = cls_names_inv["player"]
             print(detection_supervision)
             
             break
