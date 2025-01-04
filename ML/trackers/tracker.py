@@ -16,5 +16,9 @@ class Tracker:
     
     def get_object_tracks(self,frames):
         
-        detections
+        detections=self.detect_frames(frames)
+        
+        for frame_num , detection in enumerate(detections):
+            cls_names = detection.names
+            cls_names_inv = {value:key for key,value in cls_names.items()}
         
