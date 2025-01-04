@@ -6,4 +6,5 @@ db.sqlite3
 yolov8x.pt
 ML/runs/
 ML/models/*.pt
+ML/output_videos/
 
