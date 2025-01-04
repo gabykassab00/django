@@ -80,7 +80,9 @@ class Tracker:
         return  tracks        
         
     def draw_ellipse(self,frame,bbox,color,track_id):
-    
+        y2 = int(bbox[3])
+        x2 = 
+        
     def draw_annotations(self,video_frames,tracks):
         output_video_frames = []
         for frame_num,frame in enumerate(video_frames):
