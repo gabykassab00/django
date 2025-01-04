@@ -57,6 +57,13 @@ class Tracker:
                 
                 if class_id == cls_names_inv['referee']:
                     tracks["referees"][frame_num][track_id] = {"bbox":bbox}
+                    
+            for frame_detection in detection_supervision:
+                bbox = frame_detection[0].tolist()
+                class_id = frame_detection[3]
+                
+                if class_id == cls_names_inv["ball"]:
+                    tracks["ball"][frame_num][1] ={"bbox":bbox}
             
             print(detection_supervision)
             
