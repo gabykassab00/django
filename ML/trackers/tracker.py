@@ -86,3 +86,6 @@ class Tracker:
         for frame_num,frame in enumerate(video_frames):
             frame = frame.copy()
             
+            player_dict = tracks["players"][frame_num]
+            ball_dict = tracks["ball"][frame_num]
+            referee_dict=tracks["referees"][frame_num]
