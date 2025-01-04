@@ -6,6 +6,7 @@ import sys
 sys.path.append('../')
 from utils.bbox_utils import get_center_of_bbox,get_bbox_width
 import cv2
+import numpy as np
 class Tracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
@@ -120,7 +121,10 @@ class Tracker:
     
     
     def draw_triangle(self,frame,bbox,color):
+        y=int(bbox[1])
+        x,_= get_center_of_bbox(bbox)
         
+        triangle_points = np
         
         
         
