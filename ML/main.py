@@ -4,6 +4,12 @@ def main():
     #read video
     video_frames = read_video('ML/input_videos/v.mp4')
     
+    #initialize tracker
+    
+    tracker = Tracker('ML/models/best1.pt')
+    
+    tracks = tracker.get_object_tracks(video_frames)
+    
     #save video
     save_video(video_frames,'ML/output_videos/video_result.avi')
     
