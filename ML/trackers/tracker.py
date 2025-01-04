@@ -21,4 +21,9 @@ class Tracker:
         for frame_num , detection in enumerate(detections):
             cls_names = detection.names
             cls_names_inv = {value:key for key,value in cls_names.items()}
+            
+            #convert to supervision detection format 
+            detection_supervision = sv.Detections.from_ultralytics(detection)
+            
+            print(detection_supervision)
         
