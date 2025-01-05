@@ -15,16 +15,16 @@ def main():
     
     #save cropped image of a player
     for track_id,player in tracks['players'][0].items():
-        bbox = player
+        bbox = player['bbox']
         frame = video_frames[0]
         
     #cropp bbox from frame
-    cropped_image = frame[bbox[1]:bbox[3],bbox[0]:bbox[2]]
+    cropped_image = frame[int(bbox[1]):int(bbox[3]),int(bbox[0]):int(bbox[2])]
     
     #save cropped image 
     
     cv2.imwrite(f'ML/output_videos/cropped_img.jpg',cropped_image)
-            
+    break        
     
     #draw output 
     
