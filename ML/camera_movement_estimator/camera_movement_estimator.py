@@ -3,6 +3,14 @@ import cv2
 import numpy as np
 class Cameramovement():
     def __init__(self,frame):
+        
+        self.lk_params = dict (
+            winSize = (15,15),
+            maxLevel = 2 ,
+            criteria = (cv2.TERM_CRITERIA_EPS | cv2.TermCriteria_COUNT,10,0.83)
+        )
+        
+        
         first_frame_grayscale = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         mask_features = np.zeros_like(first_frame_grayscale)
         mask_features[:,0:20] = 1 
