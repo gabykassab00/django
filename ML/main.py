@@ -4,6 +4,7 @@ import cv2
 from team_assigner._init_ import Teamassigner
 from player_ball_assigner._init_ import Playerassigner
 import numpy as np
+from .camera_movement_estimator._init_ import Cameramovement
 
 
 def main():
@@ -16,6 +17,11 @@ def main():
     tracker = Tracker('ML/models/best1.pt')
     
     tracks = tracker.get_object_tracks(video_frames,read_from_stub=True,stub_path='ML/stubs/track_stubs.pkl')
+    
+    
+    #camera movement estimator 
+    
+    camera_movement_estimator = Cameramovement(video_frames[0])
     
     
     
