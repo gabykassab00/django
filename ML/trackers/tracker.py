@@ -15,6 +15,11 @@ class Tracker:
         
     def interpolate_ball_positions(self,ball_positions):
         ball_positions = [ x.get(1,{}).get('bbox',[]) for x in ball_positions]
+        df_ball_positions = pd.DataFrame(ball_positions=['x1','y1','x2','y2'])
+        
+        #interpolate missing values 
+        df_ball_positions = df_ball_positions.interpolate()
+        df_ball_positions = df_ball_positions.bfill()
         
     def detect_frames(self,frames):
         batch_size = 20 
