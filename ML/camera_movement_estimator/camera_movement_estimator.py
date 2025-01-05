@@ -1,6 +1,9 @@
 import pickle
 import cv2
 import numpy as np
+import sys 
+sys.path.append('../')
+from utils.bbox_utils import measure_distance
 class Cameramovement():
     def __init__(self,frame):
         
@@ -43,3 +46,5 @@ class Cameramovement():
             for i , (new,old) in enumerate(old_features,new_features):
                 new_features_point =new.ravel()
                 old_features_point = old.ravel()
+                
+                distance = measure_distance(new_features_point,old_features_point)
