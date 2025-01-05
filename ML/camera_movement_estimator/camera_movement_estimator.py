@@ -58,3 +58,11 @@ class Cameramovement():
                 if max_distance > self.minimum_distance :
                     camera_movement[frame_num] = [camera_movement_x,camera_movement_y]
                     old_features = cv2.goodFeaturesToTrack(frame_gray,**self.features)
+                    
+                old_gray = frame_gray.copy()
+                
+            if stub_path is not None:
+                with open(stub_path,'wb') as f :
+                    pickle.dump(camera_movement,f)
+                
+            return camera_movement
