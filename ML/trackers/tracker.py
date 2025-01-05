@@ -157,6 +157,10 @@ class Tracker:
         overlay = frame.copy()
         cv2.rectangle(overlay,(1350,850),(1900,970),(255,255,255),-1)
         alpha = 0.4  
+        cv2.addWeighted(overlay,alpha,frame,1-alpha,0,frame)
+        
+        team_ball_control_till_frame = team_ball_control[:frame_num+1]
+        
         
         
     def draw_annotations(self,video_frames,tracks,team_ball_control):
