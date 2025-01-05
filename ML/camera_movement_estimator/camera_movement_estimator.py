@@ -2,6 +2,7 @@ import pickle
 import cv2
 import numpy as np
 import sys 
+import os
 sys.path.append('../')
 from utils.bbox_utils import measure_distance,measure_xy_distance
 class Cameramovement():
@@ -31,6 +32,9 @@ class Cameramovement():
     
     def get_camera_movement(self,frames,read_from_stub=False,stub_path=None):
         #read from stub 
+        if read_from_stub and stub_path is not None and os.path.exists(stub_path):
+            with open(stub_path,'rb') as f :
+                return pickle.load(f)
         
         camera_movement = [[0,0]*len(frames)]
         
