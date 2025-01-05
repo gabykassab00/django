@@ -22,6 +22,7 @@ def main():
     #camera movement estimator 
     
     camera_movement_estimator = Cameramovement(video_frames[0])
+    camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,read_from_stub=True,stub_path='ML/stubs/camera_movement.pkl')
     
     
     
@@ -77,6 +78,10 @@ def main():
     
     #draw object tracks 
     output_video_frames = tracker.draw_annotations(video_frames,tracks,team_ball_control)
+    
+    
+    #draw camera movement 
+    output_video_frames = camera_movement_estimator.draw_camera_movement(output_video_frames,camera_movement_per_frame)
     
     #save video
     save_video(output_video_frames,'ML/output_videos/video_result.avi')
