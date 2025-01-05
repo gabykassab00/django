@@ -6,6 +6,8 @@ sys.path.append('../')
 from utils.bbox_utils import measure_distance,measure_xy_distance
 class Cameramovement():
     def __init__(self,frame):
+        self.minimum_distance = 5
+        
         
         self.lk_params = dict (
             winSize = (15,15),
@@ -51,3 +53,8 @@ class Cameramovement():
                 if distance > max_distance:
                     max_distance = distance
                     camera_movement_x,camera_movement_y = measure_xy_distance(old_features_point,new_features_point)
+                    
+                    
+                if max_distance > self.minimum_distance :
+                    camera_movement[frame_num] = [camera_movement_x,camera_movement_y]
+                    old_features = cv2.goodFeaturesToTrack(frame_gray,**self.features)
