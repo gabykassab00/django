@@ -4,11 +4,22 @@ def main():
     #read video
     video_frames = read_video('ML/input_videos/v.mp4')
     
+    
     #initialize tracker
     
     tracker = Tracker('ML/models/best1.pt')
     
     tracks = tracker.get_object_tracks(video_frames,read_from_stub=True,stub_path='ML/stubs/track_stubs.pkl')
+    
+    
+    #save cropped image of a player
+    for track_id,player in tracks['players'][0].items():
+        bbox = player
+        frame = video_frames[0]
+        
+        
+        
+            
     
     #draw output 
     
