@@ -69,7 +69,7 @@ def main():
     #draw output 
     
     #draw object tracks 
-    output_video_frames = tracker.draw_annotations(video_frames,tracks)
+    output_video_frames = tracker.draw_annotations(video_frames,tracks,team_ball_control)
     
     #save video
     save_video(output_video_frames,'ML/output_videos/video_result.avi')
