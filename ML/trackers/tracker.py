@@ -161,6 +161,10 @@ class Tracker:
         
         team_ball_control_till_frame = team_ball_control[:frame_num+1]
         
+        #get the number of time each team had the ball
+        
+        team_1_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==1].shape[0]
+        
         
         
     def draw_annotations(self,video_frames,tracks,team_ball_control):
