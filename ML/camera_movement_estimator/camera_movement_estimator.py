@@ -70,3 +70,10 @@ class Cameramovement():
                     pickle.dump(camera_movement,f)
                 
             return camera_movement
+        
+    def draw_camera_movement(self,frame,camera_movement_per_frame):
+        output_frames = []
+        
+        
+        for frame_num , frame in enumerate(frames):
+            
