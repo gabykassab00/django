@@ -2,7 +2,7 @@ from utils._init_ import read_video,save_video
 from trackers._init_ import Tracker
 import cv2
 from team_assigner._init_ import Teamassigner
-
+from player_ball_assigner._init_ import Playerassigner
 
 
 
@@ -34,6 +34,13 @@ def main():
 
             tracks['players'][frame_num][player_id]['team'] = team 
             tracks['players'][frame_num][player_id]['team_color']= team_assigner.team_colors[team]
+            
+            
+    #assign ball aquisition 
+    
+    player_assigner = Playerassigner()
+    
+    
     
     
     # #save cropped image of a player
