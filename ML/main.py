@@ -18,6 +18,11 @@ def main():
     tracks = tracker.get_object_tracks(video_frames,read_from_stub=True,stub_path='ML/stubs/track_stubs.pkl')
     
     
+    
+    #inteprolate ball positons 
+    tracks["ball"] = tracker.interpolate_ball_positions(tracks["ball"])
+    
+    
     #assign player teams 
     
     team_assigner = Teamassigner()
