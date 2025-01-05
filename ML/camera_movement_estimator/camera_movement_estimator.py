@@ -7,6 +7,14 @@ class Cameramovement():
         mask_features = np.zeros_like(first_frame_grayscale)
         mask_features[:,0:20] = 1 
         mask_features[:,900:1050] = 1 
+        
+        self.features = dict(
+            maxCorners = 100 ,
+            qualityLevel = 0.3 ,
+            minDistance = 3 ,
+            blockSize = 7 ,
+            mask= mask_features
+        )
     
     def get_camera_movement(self,frames,read_from_stub=False,stub_path=None):
         #read from stub 
