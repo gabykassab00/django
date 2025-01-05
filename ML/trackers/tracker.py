@@ -21,6 +21,10 @@ class Tracker:
         df_ball_positions = df_ball_positions.interpolate()
         df_ball_positions = df_ball_positions.bfill()
         
+        ball_positions = [{1:{"bbox":x}} for x in df_ball_positions.to_numpy().tolist()]
+        
+        return ball_positions
+        
     def detect_frames(self,frames):
         batch_size = 20 
         detections =[]
