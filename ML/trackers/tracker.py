@@ -19,9 +19,13 @@ class Tracker:
         
         #interpolate missing values 
         df_ball_positions = df_ball_positions.interpolate()
-        df_ball_positions = df_ball_positions.bfill()
+        df_ball_positions = df_ball_positions.bfill() 
         
         ball_positions = [{1:{"bbox":x}} for x in df_ball_positions.to_numpy().tolist()]
+            # Create DataFrame and interpolate
+        # df_ball_positions = pd.DataFrame(ball_positions, columns=['x1', 'y1', 'x2', 'y2'])
+        # df_ball_positions = df_ball_positions.interpolate().bfill()
+        
         
         return ball_positions
         
@@ -162,7 +166,10 @@ class Tracker:
             
             for track_id , player in player_dict.items():
                 color = player.get("team_color",(0,0,255))
-                frame=self.draw_ellipse(frame,player["bbox"],color,track_id)
+                frame= self.draw_ellipse(frame,player["bbox"],color,track_id)
+                
+                if player.get('has_ball',False):
+                    frame = self.draw_triangle(frame,player["bbox"],(0,0,255))
                 
                 
             #draw referee 

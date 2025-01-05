@@ -45,7 +45,7 @@ def main():
         
         if assigned_player != -1 :
             tracks['players'][frame_num][assigned_player]['has_ball'] = True
-    
+
     
     
     # #save cropped image of a player
