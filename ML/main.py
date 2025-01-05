@@ -42,6 +42,9 @@ def main():
     for frame_num , player_track in enumerate(tracks['players']):
         ball_bbox = tracks['ball'][frame_num][1]['bbox']
         assigned_player = player_assigner.assign_ball_to_player(player_track,ball_bbox)
+        
+        if assigned_player != -1 :
+            tracks['players'][frame_num][assigned_player]['has_ball'] = True
     
     
     
