@@ -4,6 +4,7 @@ class Teamassigner:
     def __init__(self):
         self.team_colors ={}
         self.player_team_dict ={}
+        
     def get_clustering_model(self,image):
         #reshape the image into 2d array 
         image_2d = image.reshape(-1,3)
