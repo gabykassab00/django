@@ -38,10 +38,16 @@ class Teamassigner:
         non_player_cluster = max(set(corner_clusters),key=corner_clusters.count)
         player_cluster = 1- non_player_cluster
         
-    
+        player_color = kmeans.cluster_centers_[player_cluster]
+        
+        return player_color
     
     def assign_team_color(self,frame,player_detections):
         player_colors = []
         for _,player_detection in player_detections.items():
             bbox = player_detection["bbox"]
             player_color = self.get_player_color(frame,bbox)
+            player_colors.append(player_color)
+            
+        kmeans = KMeans(n_clusters=2,init="k-means++",n_init=1)
+        kmeans.fit(player_colors)
