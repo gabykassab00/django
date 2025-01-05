@@ -11,6 +11,9 @@ class Teamassigner:
         #perform k-means with 2 clusters 
         
         kmeans = KMeans(n_clusters=2,init="k-means++",n_init=1)
+        kmeans.fit(image_2d)
+        
+        return kmeans
     
     
     def get_player_color(self,frame,bbox):
@@ -21,6 +24,12 @@ class Teamassigner:
         #get clustering model 
         
         kmeans = self.get_clustering_model(top_half_image)
+        
+        #get the cluster labels for each pixel 
+        
+        labels= kmeans.labels_
+        
+        
     
     
     def assign_team_color(self,frame,player_detections):
