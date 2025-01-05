@@ -152,6 +152,12 @@ class Tracker:
         return frame 
         
         
+    def draw_team_ball_control(self,frame,frame_num,team_ball_control):
+        #draw a semi-transparent rectangle 
+        overlay = frame.copy()
+        cv2.rectangle(overlay,(1350,850),(1900,970),(255,255,255),-1)
+        alpha = 0.4  
+        
         
     def draw_annotations(self,video_frames,tracks,team_ball_control):
         output_video_frames = []
