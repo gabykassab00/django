@@ -7,10 +7,14 @@ sys.path.append('../')
 from utils.bbox_utils import get_center_of_bbox,get_bbox_width
 import cv2
 import numpy as np
+import pandas as pd
 class Tracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
+        
+    def interpolate_ball_positions(self,ball_positions):
+        ball_positions = [ x.get(1,{}).get('bbox',[]) for x in ball_positions]
         
     def detect_frames(self,frames):
         batch_size = 20 
