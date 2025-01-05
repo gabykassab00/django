@@ -29,6 +29,14 @@ class Teamassigner:
         
         labels= kmeans.labels_
         
+        #reshape the labels to the image shape 
+        
+        clustered_image = labels.reshape(top_half_image.shape[0],top_half_image.shape[1])
+        
+        #get the player cluster 
+        corner_clusters = [clustered_image[0,0],clustered_image[0,-1],clustered_image[-1,0],clustered_image[-1,-1]]
+        non_player_cluster = max(set(corner_clusters),key=corner_clusters.count)
+        player_cluster = 1- non_player_cluster
         
     
     
