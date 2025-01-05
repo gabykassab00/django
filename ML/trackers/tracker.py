@@ -22,9 +22,7 @@ class Tracker:
         df_ball_positions = df_ball_positions.bfill() 
         
         ball_positions = [{1:{"bbox":x}} for x in df_ball_positions.to_numpy().tolist()]
-            # Create DataFrame and interpolate
-        # df_ball_positions = pd.DataFrame(ball_positions, columns=['x1', 'y1', 'x2', 'y2'])
-        # df_ball_positions = df_ball_positions.interpolate().bfill()
+
         
         
         return ball_positions
@@ -165,13 +163,23 @@ class Tracker:
         
         team_1_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==1].shape[0]
         team_2_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==2].shape[0]
-        team_1 = team_1_num_frames/(team_1_num_frames+team_2_num_frames)
-        team_2 = team_2_num_frames/(team_1_num_frames+team_2_num_frames)
+
+            # Handle division by zero
+        total_frames = team_1_num_frames + team_2_num_frames
+        if total_frames == 0:
+            team_1 = 0.0
+            team_2 = 0.0
+        else:
+            team_1 = team_1_num_frames / total_frames
+            team_2 = team_2_num_frames / total_frames
         
         cv2.putText(frame,f"team 1 ball control :{team_1*100:.2f}%",(1400,900),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
         cv2.putText(frame,f"team 2 ball control :{team_2*100:.2f}%",(1400,950),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
         
         return frame
+    
+
+
         
     def draw_annotations(self,video_frames,tracks,team_ball_control):
         output_video_frames = []
