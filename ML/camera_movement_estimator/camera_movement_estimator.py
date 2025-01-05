@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import sys 
 sys.path.append('../')
-from utils.bbox_utils import measure_distance
+from utils.bbox_utils import measure_distance,measure_xy_distance
 class Cameramovement():
     def __init__(self,frame):
         
@@ -48,3 +48,6 @@ class Cameramovement():
                 old_features_point = old.ravel()
                 
                 distance = measure_distance(new_features_point,old_features_point)
+                if distance > max_distance:
+                    max_distance = distance
+                    camera_movement_x,camera_movement_y = measure_xy_distance(old_features_point,new_features_point)
