@@ -1,5 +1,6 @@
 from utils._init_ import read_video,save_video
 from trackers._init_ import Tracker
+import cv2
 def main():
     #read video
     video_frames = read_video('ML/input_videos/v.mp4')
@@ -17,8 +18,12 @@ def main():
         bbox = player
         frame = video_frames[0]
         
-        
-        
+    #cropp bbox from frame
+    cropped_image = frame[bbox[1]:bbox[3],bbox[0]:bbox[2]]
+    
+    #save cropped image 
+    
+    cv2.imwrite(f'ML/output_videos/cropped_img.jpg',cropped_image)
             
     
     #draw output 
