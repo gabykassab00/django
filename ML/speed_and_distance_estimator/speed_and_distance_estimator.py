@@ -1,6 +1,6 @@
 import sys
 sys.path.append
-from utils.bbox_utils import measure_distance
+from utils.bbox_utils import measure_distance,get_foot_position
 
 class Speedanddistanceestimator():
     def __init__(self):
@@ -64,3 +64,8 @@ class Speedanddistanceestimator():
                         distance = track_info.get('distance',None)
                         if speed is None or distance is None:
                             continue
+                        
+                        bbox = track_info['bbox']
+                        position = get_foot_position(bbox)
+                        position = list(position)
+                        position[1]+=40
