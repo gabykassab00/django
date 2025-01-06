@@ -19,7 +19,10 @@ class Tracker:
             for frame_num , track in enumerate(object_tracks):
                 for track_id,track_info in track.items():
                     bbox = track_info['bbox']
-        
+                    if object == 'ball':
+                        position = get_center_of_bbox(bbox)
+                    else :
+                        
         
     def interpolate_ball_positions(self,ball_positions):
         ball_positions = [ x.get(1,{}).get('bbox',[]) for x in ball_positions]
