@@ -20,3 +20,9 @@ class Viewtransformer:
             [court_length,0],
             [court_length,court_width]
         })
+        
+        
+        self.pixel_vertices = self.pixel_vertices.astype(np.float32)
+        self.pixel_vertices = self.target_vertices.astype(np.float32)
+        
+        
