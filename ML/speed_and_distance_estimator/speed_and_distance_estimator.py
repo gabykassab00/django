@@ -15,3 +15,10 @@ class Speedanddistanceestimator():
             for track_id ,_ in object_tracks[frame_num].items():
                 if track_id not in object_tracks[last_frame]:
                     continue
+                
+                start_position = object_tracks[frame_num][track_id]['position_transformed']
+                end_position = object_tracks[last_frame][track_id]['position_transformed']
+                
+                
+                if start_position is None or end_position is None:
+                    continue
