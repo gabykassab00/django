@@ -9,6 +9,11 @@ class Speedanddistanceestimator():
         
         
     def add_speed_and_distance_to_tracks(self,tracks):
+        
+        total_distance = {} 
+        
+        
+        
         for object , object_tracks in tracks.items():
             if object == 'ball' or object == 'referees' :
                 continue
@@ -31,3 +36,9 @@ class Speedanddistanceestimator():
                 time_elapsed = (last_frame-frame_num)/self.frame_rate
                 speed_meter_per_second =distance_covered/time_elapsed
                 speed_km_per_hour = speed_meter_per_second*3.6
+                
+                if object not in total_distance:
+                    total_distance[object] = {}
+                    
+                if track_id not in total_distance[object]:
+                    total_distance[object][track_id] = 0 
