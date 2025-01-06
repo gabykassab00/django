@@ -19,6 +19,10 @@ def main():
     tracks = tracker.get_object_tracks(video_frames,read_from_stub=True,stub_path='ML/stubs/track_stubs.pkl')
     
     
+    #get object positions
+    tracker.add_position_to_tracks(tracks)
+    
+    
     #camera movement estimator 
     
     camera_movement_estimator = Cameramovement(video_frames[0])
