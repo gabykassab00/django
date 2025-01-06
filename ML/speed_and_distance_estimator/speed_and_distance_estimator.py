@@ -56,7 +56,7 @@ class Speedanddistanceestimator():
     def draw_speed_and_distance(self,frames,tracks):
         output_frames = []
         for frame_num , frame in enumerate(frames):
-           for object,object_tracks in tracks.items():
+            for object,object_tracks in tracks.items():
                 if object == "ball" or object == "referees":
                    continue
                 for _, track_info in object_tracks[frame_num].items():   
@@ -74,3 +74,8 @@ class Speedanddistanceestimator():
                         position = tuple(map(int,position))
                         cv2.putText(frame,f"{speed:.2f} km/h",position,cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
                         cv2.putText(frame,f"{distance:.2f} km/h",(position[0],position[0]+20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
+                        
+            output_frames.append(frame)
+            
+        return output_frames
+            
