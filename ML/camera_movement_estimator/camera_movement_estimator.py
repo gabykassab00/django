@@ -27,6 +27,8 @@ class Cameramovement:
             blockSize=7,
             mask=mask_features
         )
+        
+        
 
     def get_camera_movement(self, frames, read_from_stub=False, stub_path=None):
         if read_from_stub and stub_path is not None and os.path.exists(stub_path):

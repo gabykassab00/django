@@ -13,6 +13,12 @@ class Tracker:
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
         
+        
+    def add_position_to_tracks(self,tracks):
+        for object , object_tracks in tracks.items():
+                
+        
+        
     def interpolate_ball_positions(self,ball_positions):
         ball_positions = [ x.get(1,{}).get('bbox',[]) for x in ball_positions]
         df_ball_positions = pd.DataFrame(ball_positions,columns=['x1','y1','x2','y2'])
