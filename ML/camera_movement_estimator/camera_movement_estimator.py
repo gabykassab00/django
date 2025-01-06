@@ -14,7 +14,7 @@ class Cameramovement:
             maxLevel=2,
             criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03)
         )
-
+        
         first_frame_grayscale = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         mask_features = np.zeros_like(first_frame_grayscale)
         mask_features[:, 0:20] = 255
@@ -28,6 +28,12 @@ class Cameramovement:
             mask=mask_features
         )
         
+    
+    
+    def adust_positons_to_the_tracks(self,tracks,camera_movement_per_frame):
+        
+    
+    
         
 
     def get_camera_movement(self, frames, read_from_stub=False, stub_path=None):
