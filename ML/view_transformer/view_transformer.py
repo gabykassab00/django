@@ -28,5 +28,9 @@ class Viewtransformer:
         self.perspective_transformer = cv2.getPerspectiveTransform(self.pixel_vertices,self.target_vertices)
         
     def add_transformed_position_to_tracks(self,tracks):
-            
+            for object , object_tracks in tracks.items():
+                for frame_num , track in enumerate(object_tracks):
+                    for track_id , track_info in track.items():
+                        
+                    
         
