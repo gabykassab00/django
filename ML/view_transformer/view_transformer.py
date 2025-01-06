@@ -1,5 +1,5 @@
 import numpy as np
-
+import cv2
 
 class Viewtransformer:
     def __init__(self):
@@ -25,4 +25,8 @@ class Viewtransformer:
         self.pixel_vertices = self.pixel_vertices.astype(np.float32)
         self.pixel_vertices = self.target_vertices.astype(np.float32)
         
+        self.perspective_transformer = cv2.getPerspectiveTransform(self.pixel_vertices,self.target_vertices)
+        
+    def add_transformed_position_to_tracks(self,tracks):
+            
         
