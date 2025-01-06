@@ -16,7 +16,9 @@ class Tracker:
         
     def add_position_to_tracks(self,tracks):
         for object , object_tracks in tracks.items():
-                
+            for frame_num , track in enumerate(object_tracks):
+                for track_id,track_info in track.items():
+                    bbox = track_info['bbox']
         
         
     def interpolate_ball_positions(self,ball_positions):
