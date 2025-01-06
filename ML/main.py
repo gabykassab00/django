@@ -32,6 +32,12 @@ def main():
     camera_movement_estimator.adjust_positons_to_the_tracks(tracks,camera_movement_per_frame)
     
     
+    
+    #view transformer 
+    view_transformer = Viewtransformer()
+    view_transformer.add_transformed_position_to_tracks(tracks)
+    
+    
     #inteprolate ball positons 
     tracks["ball"] = tracker.interpolate_ball_positions(tracks["ball"])
     
