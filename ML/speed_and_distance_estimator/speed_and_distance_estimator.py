@@ -1,3 +1,7 @@
+import sys
+sys.path.append
+from utils.bbox_utils import measure_distance
+
 class Speedanddistanceestimator():
     def __init__(self):
         self.frame_window = 5 
@@ -22,3 +26,5 @@ class Speedanddistanceestimator():
                 
                 if start_position is None or end_position is None:
                     continue
+                
+                distance_covered = 
