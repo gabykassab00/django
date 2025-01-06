@@ -30,7 +30,7 @@ class Cameramovement:
         
     
     
-    def adust_positons_to_the_tracks(self,tracks,camera_movement_per_frame):
+    def adjust_positons_to_the_tracks(self,tracks,camera_movement_per_frame):
         for object , object_tracks in tracks.items():
             for frame_num , track, in enumerate(object_tracks):
                 for track_id,track_info in track.items():
