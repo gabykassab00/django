@@ -49,4 +49,9 @@ class Speedanddistanceestimator():
                     if track_id not in tracks[object][frame_num_batch]:
                         continue
                     
+                    tracks[object][frame_num_batch][track_id]['speed'] = speed_km_per_hour
+                    tracks[object][frame_num_batch][track_id]['distance'] = total_distance[object][track_id]
                     
+    def draw_speed_and_distance(self,frames,tracks):
+        output_frames = []
+        for frame_num , frame in enumerate(frames):
