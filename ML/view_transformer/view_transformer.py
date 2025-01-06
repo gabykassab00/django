@@ -31,6 +31,9 @@ class Viewtransformer:
             for object , object_tracks in tracks.items():
                 for frame_num , track in enumerate(object_tracks):
                     for track_id , track_info in track.items():
+                        position = track_info['position_adjusted']
+                        position = np.array(position)
+                        position_transformed = self.transform_point(position)
                         
                     
         
