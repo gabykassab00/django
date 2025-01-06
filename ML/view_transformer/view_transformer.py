@@ -12,3 +12,11 @@ class Viewtransformer:
             [265,275],
             [1640,915]
         })
+        
+        
+        self.target_vertices = np.array({
+            [0,court_width],
+            [0,0],
+            [court_length,0],
+            [court_length,court_width]
+        })
