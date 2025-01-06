@@ -4,7 +4,7 @@ import cv2
 from team_assigner._init_ import Teamassigner
 from player_ball_assigner._init_ import Playerassigner
 import numpy as np
-from .camera_movement_estimator._init_ import Cameramovement
+from camera_movement_estimator._init_ import Cameramovement
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     #camera movement estimator 
     
     camera_movement_estimator = Cameramovement(video_frames[0])
-    camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,read_from_stub=True,stub_path='ML/stubs/camera_movement.pkl')
+    camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,read_from_stub=False,stub_path='ML/stubs/camera_movement_stub.pkl')
     
     
     
