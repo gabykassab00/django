@@ -42,3 +42,11 @@ class Speedanddistanceestimator():
                     
                 if track_id not in total_distance[object]:
                     total_distance[object][track_id] = 0 
+                    
+                total_distance[object][track_id] += distance_covered
+                
+                for frame_num_batch in range(frame_num,last_frame):
+                    if track_id not in tracks[object][frame_num_batch]:
+                        continue
+                    
+                    
