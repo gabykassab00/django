@@ -1,6 +1,7 @@
 import sys
 sys.path.append
 from utils.bbox_utils import measure_distance,get_foot_position
+import cv2
 
 class Speedanddistanceestimator():
     def __init__(self):
@@ -69,3 +70,7 @@ class Speedanddistanceestimator():
                         position = get_foot_position(bbox)
                         position = list(position)
                         position[1]+=40
+                        
+                        position = tuple(map(int,position))
+                        cv2.putText(frame,f"{speed:.2f} km/h",position,cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
+                        cv2.putText(frame,f"{distance:.2f} km/h",(position[0],position[0]+20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
