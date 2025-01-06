@@ -1,3 +1,5 @@
+import numpy as np
+
 
 class Viewtransformer:
     def __init__(self):
@@ -5,4 +7,8 @@ class Viewtransformer:
         court_length = 23.32 
         
         
-        
+        self.pixel_vertices = np.array({
+            [110,1035],
+            [265,275],
+            [1640,915]
+        })
