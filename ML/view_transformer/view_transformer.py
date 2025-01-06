@@ -27,6 +27,14 @@ class Viewtransformer:
         
         self.perspective_transformer = cv2.getPerspectiveTransform(self.pixel_vertices,self.target_vertices)
         
+    
+    def transform_point(self,point):
+        p = (int(point[0]),int(point[1]))
+        is_inside = cv2.pointPolygonTest(self.pixel_vertices,p,False)>=0 
+        if not 
+    
+    
+    
     def add_transformed_position_to_tracks(self,tracks):
             for object , object_tracks in tracks.items():
                 for frame_num , track in enumerate(object_tracks):
