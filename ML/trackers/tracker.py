@@ -4,7 +4,7 @@ import pickle
 import os
 import sys 
 sys.path.append('../')
-from utils.bbox_utils import get_center_of_bbox,get_bbox_width
+from utils.bbox_utils import get_center_of_bbox,get_bbox_width,get_foot_position
 import cv2
 import numpy as np
 import pandas as pd
@@ -22,6 +22,8 @@ class Tracker:
                     if object == 'ball':
                         position = get_center_of_bbox(bbox)
                     else :
+                        position = get_foot_position(bbox)
+                    tracks[object][frame_num][track_id]['position'] = position
                         
         
     def interpolate_ball_positions(self,ball_positions):
