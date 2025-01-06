@@ -102,6 +102,11 @@ def main():
     #draw camera movement 
     output_video_frames = camera_movement_estimator.draw_camera_movement(output_video_frames,camera_movement_per_frame)
     
+   
+    #draw speed and distance 
+    
+    speed_and_distance_estimator.draw_speed_and_distance(output_video_frames,tracks)
+   
     #save video
     save_video(output_video_frames,'ML/output_videos/video_result.avi')
     
