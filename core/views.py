@@ -203,5 +203,9 @@ class Googleauthapiview(APIView):
     
     
 class Fileuploadview(APIView):
-    parser_classes = ()
+    parser_classes = (MultiPartParser,FormParser)
+    
+    def post(self,request,*args,**kwargs):
+        file_obj = request.FILES['file']
+        
         
