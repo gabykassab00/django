@@ -212,3 +212,9 @@ class Fileuploadview(APIView):
         upload_path = os.path.join('media','uploads')
         os.makedirs(upload_path,exist_ok=True)
         
+        save_file_path =os.path.join(upload_path,file_obj.name)
+        with open(save_file_path,'wb+') as destination:
+            for chunk in file_obj.chunks():
+                destination.write(chunk)
+            
+        
