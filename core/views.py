@@ -216,5 +216,13 @@ class Fileuploadview(APIView):
         with open(save_file_path,'wb+') as destination:
             for chunk in file_obj.chunks():
                 destination.write(chunk)
+                
+        try:
+            main(save_file_path)
+            return Response({
+                "message":f"File {file_obj.name} uploaded and processed succesfully"
+            })
+        except Exception as e :
+            return Response({"error":str(e)})
             
         
