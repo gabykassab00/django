@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 from google.oauth2 import id_token
 from google.auth.transport.requests import Request as googlereq
 from rest_framework.parsers import MultiPartParser,FormParser
-
+import os
 
 
 
@@ -208,4 +208,7 @@ class Fileuploadview(APIView):
     def post(self,request,*args,**kwargs):
         file_obj = request.FILES['file']
         
+        
+        upload_path = os.path.join('media','uploads')
+        os.makedirs(upload_path,exist_ok=True)
         
