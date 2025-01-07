@@ -18,22 +18,21 @@ from ML.view_transformer.view_transformer import Viewtransformer
 from ML.speed_and_distance_estimator.speed_and_distance_estimator import Speedanddistanceestimator
 
 
-def main(video_path):
+def main():
     
-    print(f"Video Path Received: {video_path}")
+    # print(f"Video Path Received: {video_path}")
 
-    # Validate the video file path
-    if not os.path.exists(video_path):
-        raise FileNotFoundError(f"File not found at: {video_path}")
+    # if not os.path.exists(video_path):
+    #     raise FileNotFoundError(f"File not found at: {video_path}")
 
-    print(f"Processing video: {video_path}")
+    # print(f"Processing video: {video_path}")
     
     
     
     
     #read video
-    # video_frames = read_video('ML/input_videos/v1.mp4')
-    video_frames = read_video(video_path)
+    video_frames = read_video('ML/input_videos/v.mp4')
+    # video_frames = read_video(video_path)
     
 
     

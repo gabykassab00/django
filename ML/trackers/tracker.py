@@ -167,21 +167,27 @@ class Tracker:
         return frame 
         
         
-    def draw_team_ball_control(self,frame,frame_num,team_ball_control):
-        #draw a semi-transparent rectangle 
-        overlay = frame.copy()
-        cv2.rectangle(overlay,(1350,850),(1900,970),(255,255,255),-1)
-        alpha = 0.4  
-        cv2.addWeighted(overlay,alpha,frame,1-alpha,0,frame)
-        
-        team_ball_control_till_frame = team_ball_control[:frame_num+1]
-        
-        #get the number of time each team had the ball
-        
-        team_1_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==1].shape[0]
-        team_2_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==2].shape[0]
 
-            # Handle division by zero
+    
+    
+    def draw_team_ball_control(self, frame, frame_num, team_ball_control):
+        # Debugging: Check lengths and frame number
+        print(f"Frame Number: {frame_num}, Total Frames in team_ball_control: {len(team_ball_control)}")
+
+        # Draw a semi-transparent rectangle
+        overlay = frame.copy()
+        cv2.rectangle(overlay, (1350, 850), (1900, 970), (255, 255, 255), -1)
+        alpha = 0.4
+        cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
+
+        # Get the team ball control up to the current frame
+        team_ball_control_till_frame = team_ball_control[:frame_num + 1]
+
+        # Calculate the number of frames each team had the ball
+        team_1_num_frames = team_ball_control_till_frame[team_ball_control_till_frame == 1].shape[0]
+        team_2_num_frames = team_ball_control_till_frame[team_ball_control_till_frame == 2].shape[0]
+
+        # Handle division by zero
         total_frames = team_1_num_frames + team_2_num_frames
         if total_frames == 0:
             team_1 = 0.0
@@ -189,12 +195,23 @@ class Tracker:
         else:
             team_1 = team_1_num_frames / total_frames
             team_2 = team_2_num_frames / total_frames
-        
-        cv2.putText(frame,f"team 1 ball control :{team_1*100:.2f}%",(1400,900),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
-        cv2.putText(frame,f"team 2 ball control :{team_2*100:.2f}%",(1400,950),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
-        
+
+        # Draw text on the frame
+        cv2.putText(frame, f"team 1 ball control :{team_1*100:.2f}%", (1400, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
+        cv2.putText(frame, f"team 2 ball control :{team_2*100:.2f}%", (1400, 950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
+
+        # Print ball control for the current frame
+        print(f"Frame {frame_num}: Team 1 Ball Control: {team_1*100:.2f}%, Team 2 Ball Control: {team_2*100:.2f}%")
+
+        # Debug: Check if last frame is reached
+        if frame_num == len(team_ball_control) - 2:
+            print(f"Last Frame Detected: {frame_num}")
+            avg_team_1_control = (team_ball_control == 1).sum() / len(team_ball_control) * 100
+            avg_team_2_control = (team_ball_control == 2).sum() / len(team_ball_control) * 100
+            print(f"Average Team 1 Ball Control: {avg_team_1_control:.2f}%")
+            print(f"Average Team 2 Ball Control: {avg_team_2_control:.2f}%")
+
         return frame
-    
 
 
         
