@@ -10,6 +10,9 @@ import datetime,random,string
 from django.core.mail import send_mail
 from google.oauth2 import id_token
 from google.auth.transport.requests import Request as googlereq
+from rest_framework.parsers import MultiPartParser,FormParser
+
+
 
 
 class Registerapiview(APIView):
@@ -198,4 +201,7 @@ class Googleauthapiview(APIView):
             }
         return response
     
+    
+class Fileuploadview(APIView):
+    parser_classes = ()
         
