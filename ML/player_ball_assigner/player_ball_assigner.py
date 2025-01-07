@@ -1,8 +1,7 @@
+
 import sys 
 sys.path.append('../')
-from utils.bbox_utils import get_center_of_bbox ,measure_distance
-
-
+from ML.utils.bbox_utils import get_center_of_bbox ,measure_distance
         
 class Playerassigner:
     def __init__(self):

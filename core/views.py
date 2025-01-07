@@ -12,6 +12,7 @@ from google.oauth2 import id_token
 from google.auth.transport.requests import Request as googlereq
 from rest_framework.parsers import MultiPartParser,FormParser
 import os
+from ML.main import main
 
 
 
@@ -201,28 +202,32 @@ class Googleauthapiview(APIView):
             }
         return response
     
-    
 class Fileuploadview(APIView):
-    parser_classes = (MultiPartParser,FormParser)
-    
-    def post(self,request,*args,**kwargs):
-        file_obj = request.FILES['file']
-        
-        
-        upload_path = os.path.join('media','uploads')
-        os.makedirs(upload_path,exist_ok=True)
-        
-        save_file_path =os.path.join(upload_path,file_obj.name)
-        with open(save_file_path,'wb+') as destination:
-            for chunk in file_obj.chunks():
-                destination.write(chunk)
-                
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        file_obj = request.FILES['file']  
+
+        media_folder = os.path.join('media')
+        os.makedirs(media_folder, exist_ok=True) 
+
+        save_file_path = os.path.abspath(os.path.join(media_folder, file_obj.name))
+
         try:
+            with open(save_file_path, 'wb+') as destination:
+                for chunk in file_obj.chunks():
+                    destination.write(chunk)
+
+            print(f"File saved at: {save_file_path}") 
+
             main(save_file_path)
+
             return Response({
-                "message":f"File {file_obj.name} uploaded and processed succesfully"
-            })
-        except Exception as e :
-            return Response({"error":str(e)})
+                "message": f"File '{file_obj.name}' uploaded and processed successfully."
+            }, status=200)
+
+        except Exception as e:
+            print(f"Error: {e}")  
+            return Response({"error": str(e)}, status=500)
             
         

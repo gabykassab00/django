@@ -1,23 +1,47 @@
-from utils._init_ import read_video,save_video
-from trackers._init_ import Tracker
-import cv2
-from team_assigner._init_ import Teamassigner
-from player_ball_assigner._init_ import Playerassigner
-import numpy as np
-from camera_movement_estimator._init_ import Cameramovement
-from view_transformer._init_ import Viewtransformer
-from speed_and_distance_estimator._init_ import Speedanddistanceestimator
 
-def main():
-    #read video
-    video_frames = read_video('ML/input_videos/v.mp4')
+import os
+import sys
+
+# Get the directory containing `ML` and add it to sys.path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from ML.utils.video_utils import read_video,save_video
+from ML.trackers.tracker import Tracker
+import cv2
+from ML.team_assigner.team_assigner import Teamassigner
+from ML.player_ball_assigner.player_ball_assigner import Playerassigner
+import numpy as np
+from ML.camera_movement_estimator.camera_movement_estimator import Cameramovement
+from ML.view_transformer.view_transformer import Viewtransformer
+from ML.speed_and_distance_estimator.speed_and_distance_estimator import Speedanddistanceestimator
+
+
+def main(video_path):
     
+    print(f"Video Path Received: {video_path}")
+
+    # Validate the video file path
+    if not os.path.exists(video_path):
+        raise FileNotFoundError(f"File not found at: {video_path}")
+
+    print(f"Processing video: {video_path}")
+    
+    
+    
+    
+    #read video
+    # video_frames = read_video('ML/input_videos/v1.mp4')
+    video_frames = read_video(video_path)
+    
+
     
     #initialize tracker
     
     tracker = Tracker('ML/models/best1.pt')
     
-    tracks = tracker.get_object_tracks(video_frames,read_from_stub=True,stub_path='ML/stubs/track_stubs.pkl')
+    tracks = tracker.get_object_tracks(video_frames,read_from_stub=False,stub_path='ML/stubs/track_stubs.pkl')
     
     
     #get object positions

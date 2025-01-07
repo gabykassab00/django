@@ -1,7 +1,9 @@
+
 import sys
 sys.path.append
-from utils.bbox_utils import measure_distance,get_foot_position
+from ML.utils.bbox_utils import measure_distance,get_foot_position
 import cv2
+
 
 class Speedanddistanceestimator():
     def __init__(self):
