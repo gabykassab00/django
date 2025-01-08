@@ -269,4 +269,8 @@ class Tracker:
             ball_position = ball[1].get("position",get_center_of_bbox(ball[1]["bbox"]))
             closest_player_id , closest_distance = None , float("inf")
             
+            for player_id,player_data in players.items():
+                player_position = player_data["position"]
+                distance = np.linalg.norm(np.array(ball_position)-np.array(player_position))
+                if ditance < closest_distance:
                 
