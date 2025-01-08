@@ -103,60 +103,44 @@ def main():
     
     
     
-    #track passes 
-    passes = tracker.track_passes(tracks,video_frames)
-    
-    #count passes for each passer 
-    
-    passer_totals = {"team1":{},"team2":{}}
-    total_passes_per_team = {"team1":0,"team2":0}
-    
-    for team,team_passes in passes.items():
-        for pass_event in team_passes:
-            passer = pass_event["passer"]
-            if passer in passer_totals[team]:
-                passer_totals[team][passer] +=1
-            else :
-                passer_totals[team][passer] = 1 
-                
-            total_passes_per_team[team] +=1 
-            
-    #log passers with total passes 
-    print("\nPassers and total passes")
-    for team , team_passers in passer_totals.items():
-        print(f"\n{team}:")
-        for passer , total_passes in team_passers.items():
-            print(f"passer:{passer},total passes:{total_passes}")
-            
-    #log total passes for each team
-    print("\ntotal passes for each team:")
-    for team,total_passes in total_passes_per_team.items():
-        print(f"{team}:{total_passes}passes")
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
     
     # #save cropped image of a player
     # for track_id,player in tracks['players'][0].items():
     #     bbox = player['bbox']
     #     frame = video_frames[0]
-        
+
     #     #cropp bbox from frame
     #     cropped_image = frame[int(bbox[1]):int(bbox[3]),int(bbox[0]):int(bbox[2])]
-        
+    passes = tracker.track_passes(tracks,team_assigner,video_frames)
+    # Print only the players who made passes
+    # Initialize dictionaries to count passes
+    passer_totals = {"team1": {}, "team2": {}}
+    total_passes_per_team = {"team1": 0, "team2": 0}  
+
+    # Count passes for each passer
+    for team, team_passes in passes.items():
+        for pass_event in team_passes:
+            passer = pass_event['passer']
+            if passer in passer_totals[team]:
+                passer_totals[team][passer] += 1  
+            else:
+                passer_totals[team][passer] = 1  
+            
+            total_passes_per_team[team] += 1  
+
+    # Print Passers and Total Passes
+    print("\nPassers and Total Passes:")
+    for team, team_passers in passer_totals.items():
+        print(f"\n{team}:")
+        for passer, total_passes in team_passers.items():
+            print(f"Passer: {passer}, Total Passes: {total_passes}")
+
+    # Print Total Passes for Each Team
+    print("\nTotal Passes for Each Team:")
+    for team, total_passes in total_passes_per_team.items():
+        print(f"{team}: {total_passes} passes")
+
+
     #     #save cropped image 
         
     #     cv2.imwrite(f'ML/output_videos/cropped_img.jpg',cropped_image)

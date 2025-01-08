@@ -172,7 +172,6 @@ class Tracker:
     
     def draw_team_ball_control(self, frame, frame_num, team_ball_control):
         # Debugging: Check lengths and frame number
-        print(f"Frame Number: {frame_num}, Total Frames in team_ball_control: {len(team_ball_control)}")
 
         # Draw a semi-transparent rectangle
         overlay = frame.copy()
@@ -201,7 +200,6 @@ class Tracker:
         cv2.putText(frame, f"team 2 ball control :{team_2*100:.2f}%", (1400, 950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
 
         # Print ball control for the current frame
-        print(f"Frame {frame_num}: Team 1 Ball Control: {team_1*100:.2f}%, Team 2 Ball Control: {team_2*100:.2f}%")
 
         # Debug: Check if last frame is reached
         if frame_num == len(team_ball_control) - 2:
@@ -253,52 +251,132 @@ class Tracker:
         return output_video_frames
     
     
-    def track_passes(self,tracks,video_frames):
-        passes = {"team1":[],"team2":[]}
-        previous_possesion = None
-        
-        for frame_num , frame in enumerate(video_frames):
-            players = tracks["players"][frame_num]
-            ball = tracks["ball"][frame_num]
-            
-            
-            if not ball or 1 not in ball:
+ 
+ 
+ 
+    def track_passes(self, tracks, team_assigner, video_frames):
+        passes = {"team1": [], "team2": []}
+        previous_possession = None
+        possession_threshold = 50  
+
+        # print("Starting pass tracking...")
+
+        for frame_num, player_tracks in enumerate(tracks["players"]):
+
+            ball_tracks = tracks["ball"][frame_num]
+
+            if not ball_tracks or 1 not in ball_tracks:
                 continue
-            
-            
-            ball_position = ball[1].get("position",get_center_of_bbox(ball[1]["bbox"]))
-            closest_player_id , closest_distance = None , float("inf")
-            
-            for player_id,player_data in players.items():
+
+            # Get ball position
+            ball_position = ball_tracks[1].get("position", get_center_of_bbox(ball_tracks[1]["bbox"]))
+
+            closest_player_id, closest_distance = None, float("inf")
+
+            # Find the closest player to the ball
+            for player_id, player_data in player_tracks.items():
                 player_position = player_data["position"]
-                distance = np.linalg.norm(np.array(ball_position)-np.array(player_position))
-                if ditance < closest_distance:
+                frame = video_frames[frame_num]
+                player_bbox = player_data["bbox"]
+
+                # Get the player's team using Teamassigner
+                team = team_assigner.get_player_team(frame, player_bbox, player_id)
+                player_data["team"] = team  # Update team in player data
+
+                distance = np.linalg.norm(np.array(ball_position) - np.array(player_position))
+                if distance < closest_distance:
                     closest_distance = distance
                     closest_player_id = player_id
-                    
-            if closest_player_id != previous_possesion and previous_possesion is not None:
-                if previous_possesion not in players:
-                    previous_possesion = None
+
+
+            # Check for possession change
+            if previous_possession is not None:
+                if previous_possession not in player_tracks:
+                    previous_possession = None
                     continue
-                
-                
-                pass_distance = np.linalg.norm(np.array(players[previous_possesion]["position"])-np.array(ball_position))
-                
-                
-                passer_team = players[previous_possesion].get("team","unknown")
-                pass_event = {
-                    "frame":frame_num,
-                    "passer":previous_possesion,
-                    "receiver":closest_player_id,
-                    "distance":pass_distance,
-                }
-                
-                if passer_team == "team1":
-                    passes["team1"].append(pass_event)
-                elif passer_team == "team2":
-                    passes["team2"].append(pass_event)
-                    
-            
-            previous_possesion = closest_player_id
-            
+
+                previous_player_position = player_tracks[previous_possession]["position"]
+                ball_movement = np.linalg.norm(np.array(previous_player_position) - np.array(ball_position))
+
+                if closest_player_id != previous_possession and ball_movement > possession_threshold:
+                    # Pass detected
+                    pass_distance = np.linalg.norm(np.array(previous_player_position) - np.array(ball_position))
+                    passer_team = player_tracks[previous_possession].get("team", "unknown")
+
+                    pass_event = {
+                        "frame": frame_num,
+                        "passer": previous_possession,
+                        "receiver": closest_player_id,
+                        "distance": pass_distance,
+                    }
+
+                    # Assign pass to the corresponding team
+                    if passer_team == 1:
+                        passes["team1"].append(pass_event)
+                    elif passer_team == 2:
+                        passes["team2"].append(pass_event)
+                    else:
+                        print("Passer's team is unknown. Pass not added.")
+
+            # Update possession
+            previous_possession = closest_player_id
+
+
         return passes
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
