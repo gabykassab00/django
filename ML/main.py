@@ -100,6 +100,25 @@ def main():
         else :
             team_ball_control.append(team_ball_control[-1])
     team_ball_control = np.array(team_ball_control)
+    
+    
+    
+    #track passes 
+    passes = tracker.track_passes(tracks,video_frames)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     
