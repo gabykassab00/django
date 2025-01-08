@@ -273,4 +273,12 @@ class Tracker:
                 player_position = player_data["position"]
                 distance = np.linalg.norm(np.array(ball_position)-np.array(player_position))
                 if ditance < closest_distance:
+                    closest_distance = distance
+                    closest_player_id = player_id
+                    
+            if closest_player_id != previous_possesion and previous_possesion is not None:
+                if previous_possesion not in players:
+                    previous_possesion = None
+                    continue
+                
                 
