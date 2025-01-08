@@ -262,4 +262,8 @@ class Tracker:
             ball = tracks["ball"][frame_num]
             
             
+            if not ball or 1 not in ball:
+                continue
+            
+            
                 
