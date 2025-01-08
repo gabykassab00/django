@@ -56,4 +56,8 @@ class Speedanddistanceestimator():
                         tracks[object][frame_num_batch][track_id]['distance'] = total_distance[object][track_id]
                         
 
- 
+
+    def draw_speed_and_distance(self,frame,tracks):
+        player_stats={} 
+        
+        output_frames = []
