@@ -111,6 +111,10 @@ def main():
     passer_totals = {"team1":{},"team2":{}}
     total_passes_per_team = {"team1":0,"team2":0}
     
+    for team,team_passes in passes.items():
+        for pass_event in team_passes:
+            passer = pass_event["passer"]
+    
     
     
     
