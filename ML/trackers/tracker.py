@@ -297,3 +297,8 @@ class Tracker:
                     passes["team1"].append(pass_event)
                 elif passer_team == "team2":
                     passes["team2"].append(pass_event)
+                    
+            
+            previous_possesion = closest_player_id
+            
+        return passes
