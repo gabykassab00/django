@@ -251,4 +251,9 @@ class Tracker:
             output_video_frames.append(frame)
             
         return output_video_frames
+    
+    
+    def track_passes(self,tracks,video_frames):
+        passes = {"team1":[],"team2":[]}
+        previous_possesion = None
                 
