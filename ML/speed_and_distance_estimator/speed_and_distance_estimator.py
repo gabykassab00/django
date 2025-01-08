@@ -77,3 +77,14 @@ class Speedanddistanceestimator():
                         position=list(position)
                         position[1] +=40
                         position = tuple(map(int,position))
+                        
+                        
+                        if track_id not in player_stats:
+                            player_stats[track_id] = {"total_speed":0,"speed_count":0,"total_distance":0}
+                            
+                        player_stats[track_id]["total_speed"] +=speed
+                        player_stats[track_id]["speed_count"] +=1
+                        player_stats[track_id]["total_distance"] = distance
+                        
+                        
+            output_frames(frame)
