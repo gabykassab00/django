@@ -69,3 +69,11 @@ class Speedanddistanceestimator():
                     if "speed" in track_info:
                         speed = track_info.get("speed",None)
                         distance = track_info.get("distance",None)
+                        if speed is None or distance is None:
+                            continue
+                        
+                        bbox = track_info["bbox"]
+                        position = get_foot_position(bbox)
+                        position=list(position)
+                        position[1] +=40
+                        position = tuple(map(int,position))
