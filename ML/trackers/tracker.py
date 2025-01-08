@@ -256,4 +256,10 @@ class Tracker:
     def track_passes(self,tracks,video_frames):
         passes = {"team1":[],"team2":[]}
         previous_possesion = None
+        
+        for frame_num , frame in enumerate(video_frames):
+            players = tracks["players"][frame_num]
+            ball = tracks["ball"][frame_num]
+            
+            
                 
