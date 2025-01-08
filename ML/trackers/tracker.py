@@ -266,4 +266,7 @@ class Tracker:
                 continue
             
             
+            ball_position = ball[1].get("position",get_center_of_bbox(ball[1]["bbox"]))
+            closest_player_id , closest_distance = None , float("inf")
+            
                 
