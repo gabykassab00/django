@@ -31,7 +31,7 @@ def main():
     
     
     #read video
-    video_frames = read_video('ML/input_videos/v.mp4')
+    video_frames = read_video('ML/input_videos/v1.mp4')
     # video_frames = read_video(video_path)
     
 
