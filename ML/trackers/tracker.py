@@ -290,5 +290,10 @@ class Tracker:
                     "frame":frame_num,
                     "passer":previous_possesion,
                     "receiver":closest_player_id,
-                    "distance":pass_distance
+                    "distance":pass_distance,
                 }
+                
+                if passer_team == "team1":
+                    passes["team1"].append(pass_event)
+                elif passer_team == "team2":
+                    passes["team2"].append(pass_event)
