@@ -114,6 +114,10 @@ def main():
     for team,team_passes in passes.items():
         for pass_event in team_passes:
             passer = pass_event["passer"]
+            if passer in passer_totals[team]:
+                passer_totals[team][passer] +=1
+            else :
+                passer_totals[team][passer] = 1 
     
     
     
