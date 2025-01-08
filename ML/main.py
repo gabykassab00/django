@@ -118,6 +118,13 @@ def main():
                 passer_totals[team][passer] +=1
             else :
                 passer_totals[team][passer] = 1 
+                
+            total_passes_per_team[team] +=1 
+            
+    #log passers with total passes 
+    print("\nPassers and total passes")
+    for team , team_passers in passer_totals.items():
+        
     
     
     
