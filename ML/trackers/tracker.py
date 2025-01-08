@@ -282,3 +282,13 @@ class Tracker:
                     continue
                 
                 
+                pass_distance = np.linalg.norm(np.array(players[previous_possesion]["position"])-np.array(ball_position))
+                
+                
+                passer_team = players[previous_possesion].get("team","unknown")
+                pass_event = {
+                    "frame":frame_num,
+                    "passer":previous_possesion,
+                    "receiver":closest_player_id,
+                    "distance":pass_distance
+                }
