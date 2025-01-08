@@ -57,7 +57,12 @@ class Speedanddistanceestimator():
                         
 
 
-    def draw_speed_and_distance(self,frame,tracks):
+    def draw_speed_and_distance(self,frames,tracks):
         player_stats={} 
         
         output_frames = []
+        for frame_num,frame in enumerate(frames):
+            for object, object_tracks in tracks.items():
+                if object == "ball" or object == "referees":
+                    continue
+                
