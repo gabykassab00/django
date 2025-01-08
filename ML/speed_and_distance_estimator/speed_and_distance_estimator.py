@@ -88,3 +88,11 @@ class Speedanddistanceestimator():
                         
                         
             output_frames(frame)
+            
+        print("\nplayer stats:")
+        for player_id , stats in player_stats.items():
+            average_speed = stats["total_speed"]/stats["speed_count"] if stats["speed_count"] > 0 else 0 
+            total_distance = stats["total_distance"]
+            print(f"player {player_id}: average player : {average_speed:.2f} km/h, total distance :{total_distance:.2f} m")
+            
+        return output_frames
