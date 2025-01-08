@@ -106,6 +106,11 @@ def main():
     #track passes 
     passes = tracker.track_passes(tracks,video_frames)
     
+    #count passes for each passer 
+    
+    passer_totals = {"team1":{},"team2":{}}
+    total_passes_per_team = {"team1":0,"team2":0}
+    
     
     
     
