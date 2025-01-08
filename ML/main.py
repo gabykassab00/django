@@ -129,6 +129,9 @@ def main():
             print(f"passer:{passer},total passes:{total_passes}")
             
     #log total passes for each team
+    print("\ntotal passes for each team:")
+    for team,total_passes in total_passes_per_team.items():
+        print(f"{team}:{total_passes}passes")
     
     
     
