@@ -276,8 +276,7 @@ class GetStatsView(APIView):
             # Include team summary for average speed and total distance
             team_summary = PASSES_DATA.get("team_summary", {})
 
-            # Debugging: Ensure correct team_summary values
-            print("Debug: team_summary before formatting:", team_summary)
+
 
             # Do not reassign directly; validate keys before conversion
             PASSES_DATA["team_summary"]["team1"]["average_speed"] = float(
@@ -293,14 +292,11 @@ class GetStatsView(APIView):
                 team_summary.get("team2", {}).get("total_team_distance", 0.0)
             )
 
-            # Final debugging to ensure values are correct
-            print("Debug: Final PASSES_DATA being returned:", PASSES_DATA)
+
 
             # Return the properly formatted PASSES_DATA
             return Response(PASSES_DATA, status=200)
 
         except Exception as e:
-            # Log error to server console for debugging
-            print(f"Error in GetStatsView: {e}")
             return Response({"error": str(e)}, status=500)
 
