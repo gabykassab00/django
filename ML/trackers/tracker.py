@@ -195,8 +195,8 @@ class Tracker:
             team_2 = team_2_num_frames / total_frames
 
         # Draw text on the frame
-        # cv2.putText(frame, f"team 1 ball control :{team_1*100:.2f}%", (1400, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
-        # cv2.putText(frame, f"team 2 ball control :{team_2*100:.2f}%", (1400, 950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
+        cv2.putText(frame, f"team 1 ball control :{team_1*100:.2f}%", (1400, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
+        cv2.putText(frame, f"team 2 ball control :{team_2*100:.2f}%", (1400, 950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3)
 
         # Print ball control for the current frame
 
@@ -243,7 +243,7 @@ class Tracker:
                 frame = self.draw_triangle(frame,ball["bbox"],(0,255,0))
                 
             #draw team ball control 
-            # frame = self.draw_team_ball_control(frame,frame_num,team_ball_control)
+            frame = self.draw_team_ball_control(frame,frame_num,team_ball_control)
                 
             output_video_frames.append(frame)
             

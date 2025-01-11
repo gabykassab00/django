@@ -18,21 +18,21 @@ from ML.view_transformer.view_transformer import Viewtransformer
 from ML.speed_and_distance_estimator.speed_and_distance_estimator import Speedanddistanceestimator
 
 
-def main():
+def main(video_path):
     
-    # print(f"Video Path Received: {video_path}")
+    print(f"Video Path Received: {video_path}")
 
-    # if not os.path.exists(video_path):
-    #     raise FileNotFoundError(f"File not found at: {video_path}")
+    if not os.path.exists(video_path):
+        raise FileNotFoundError(f"File not found at: {video_path}")
 
-    # print(f"Processing video: {video_path}")
+    print(f"Processing video: {video_path}")
     
     
     
     
     #read video
-    video_frames = read_video('ML/input_videos/v1.mp4')
-    # video_frames = read_video(video_path)
+    # video_frames = read_video('ML/input_videos/v.mp4')
+    video_frames = read_video(video_path)
     
 
     
@@ -142,9 +142,74 @@ def main():
 
 
     #     #save cropped image 
-        
-    #     cv2.imwrite(f'ML/output_videos/cropped_img.jpg',cropped_image)
-    #     break        
+    avg_team_1_control = (team_ball_control == 1).sum() / len(team_ball_control) * 100
+    avg_team_2_control = (team_ball_control == 2).sum() / len(team_ball_control) * 100
+    #cv2.imwrite(f'ML/output_videos/cropped_img.jpg',cropped_image)
+    # Collect average speed and total distance stats
+    player_stats = {"team1": {}, "team2": {}}
+    for frame_num, player_track in enumerate(tracks['players']):
+        for player_id, track in player_track.items():
+            speed = track.get("speed", None)
+            distance = track.get("distance", None)
+            team = track.get("team", None)
+
+            if speed is None or distance is None:
+                print(f"Frame {frame_num}: Player {player_id} missing speed or distance")
+                continue
+
+            if team is None:
+                print(f"Frame {frame_num}: Player {player_id} missing team assignment")
+                continue
+
+            print(f"Frame {frame_num}: Player {player_id} | Team {team} | Speed: {speed} km/h | Distance: {distance} m")
+
+            team_key = f"team{team}"
+
+            if player_id not in player_stats[team_key]:
+                player_stats[team_key][player_id] = {"total_speed": 0, "speed_count": 0, "total_distance": 0}
+
+            player_stats[team_key][player_id]["total_speed"] += speed
+            player_stats[team_key][player_id]["speed_count"] += 1
+            player_stats[team_key][player_id]["total_distance"] = distance
+
+    # Prepare team stats with average speed and total distance
+    team_stats = {"team1": {}, "team2": {}}
+    team_summary = {"team1": {}, "team2": {}}
+
+    for team, players in player_stats.items():
+        total_avg_speed = 0
+        total_distance = 0
+        player_count = len(players)
+
+        for player_id, stats in players.items():
+            average_speed = stats["total_speed"] / stats["speed_count"] if stats["speed_count"] > 0 else 0
+            total_distance += stats["total_distance"]
+            total_avg_speed += average_speed
+            team_stats[team][player_id] = {
+                "average_speed": average_speed,
+                "total_distance": stats["total_distance"],
+            }
+
+        team_summary[team] = {
+            "average_team_speed": total_avg_speed / player_count if player_count > 0 else 0,
+            "total_team_distance": total_distance,
+        }
+
+    print("\nTeam Summaries:")
+    for team, summary in team_summary.items():
+        print(f"{team}: Average Speed: {summary['average_team_speed']:.2f} km/h, Total Distance: {summary['total_team_distance']:.2f} m")
+    # here
+    print("hayde lezem tchoufa",team_summary)
+    return {
+        "passers_totals": passer_totals,
+        "total_passes_per_team": total_passes_per_team,
+        "team_ball_control": {
+        "team1": avg_team_1_control,
+        "team2": avg_team_2_control,
+    },
+        "team_stats": team_stats,  # Include stats for average speed and total distance
+        "team_summary": team_summary,
+    }
     
     #draw output 
     
@@ -165,3 +230,6 @@ def main():
     
 if __name__ == "__main__":
     main() 
+
+
+

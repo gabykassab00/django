@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import Registerapiview,Loginapiview,Userapiview,Refreshapiview,Logoutapiview,Forgotapiview,Resetapiview,Googleauthapiview,Fileuploadview
+from .views import Registerapiview,Loginapiview,Userapiview,Refreshapiview,Logoutapiview,Forgotapiview,Resetapiview,Googleauthapiview,Fileuploadview,GetStatsView
 urlpatterns = [
     path('register',Registerapiview.as_view()),
     path('login',Loginapiview.as_view()),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout',Logoutapiview.as_view()),
     path('forgot',Forgotapiview.as_view()),
     path('reset',Resetapiview.as_view()),
-    path('upload',Fileuploadview.as_view())
+    path('upload',Fileuploadview.as_view()),
+    path('stats', GetStatsView.as_view()),
 ]

@@ -57,42 +57,56 @@ class Speedanddistanceestimator():
                         
 
 
-    def draw_speed_and_distance(self,frames,tracks):
-        player_stats={} 
+    def draw_speed_and_distance(self, frames, tracks):
+        player_stats = {"team1": {}, "team2": {}}  
         
         output_frames = []
-        for frame_num,frame in enumerate(frames):
+        for frame_num, frame in enumerate(frames):
             for object, object_tracks in tracks.items():
                 if object == "ball" or object == "referees":
                     continue
-                for track_id,track_info in object_tracks[frame_num].items():
+                for track_id, track_info in object_tracks[frame_num].items():
                     if "speed" in track_info:
-                        speed = track_info.get("speed",None)
-                        distance = track_info.get("distance",None)
+                        speed = track_info.get("speed", None)
+                        distance = track_info.get("distance", None)
                         if speed is None or distance is None:
                             continue
                         
                         bbox = track_info["bbox"]
                         position = get_foot_position(bbox)
-                        position=list(position)
-                        position[1] +=40
-                        position = tuple(map(int,position))
+                        position = list(position)
+                        position[1] += 40
+                        position = tuple(map(int, position))
                         
+                        # Determine the player's team
+                        team = track_info.get("team", None)  
+                        if team is None:
+                            print(f"Player {track_id} has no team assigned.")
+                            continue
                         
-                        if track_id not in player_stats:
-                            player_stats[track_id] = {"total_speed":0,"speed_count":0,"total_distance":0}
-                            
-                        player_stats[track_id]["total_speed"] +=speed
-                        player_stats[track_id]["speed_count"] +=1
-                        player_stats[track_id]["total_distance"] = distance
+                        # Initialize stats for the player if not present
+                        if track_id not in player_stats[f"team{team}"]:
+                            player_stats[f"team{team}"][track_id] = {"total_speed": 0, "speed_count": 0, "total_distance": 0}
                         
-                        
-            output_frames(frame)
+                        # Update stats
+                        player_stats[f"team{team}"][track_id]["total_speed"] += speed
+                        player_stats[f"team{team}"][track_id]["speed_count"] += 1
+                        player_stats[f"team{team}"][track_id]["total_distance"] = distance
             
-        print("\nplayer stats:")
-        for player_id , stats in player_stats.items():
-            average_speed = stats["total_speed"]/stats["speed_count"] if stats["speed_count"] > 0 else 0 
+            output_frames.append(frame)
+        
+        # Log stats for each team
+        print("\nTeam 1 Stats:")
+        for player_id, stats in player_stats["team1"].items():
+            average_speed = stats["total_speed"] / stats["speed_count"] if stats["speed_count"] > 0 else 0
             total_distance = stats["total_distance"]
-            print(f"player {player_id}: average player : {average_speed:.2f} km/h, total distance :{total_distance:.2f} m")
-            
+            print(f"Player {player_id}: Average Speed: {average_speed:.2f} km/h, Total Distance: {total_distance:.2f} m")
+        
+        print("\nTeam 2 Stats:")
+        for player_id, stats in player_stats["team2"].items():
+            average_speed = stats["total_speed"] / stats["speed_count"] if stats["speed_count"] > 0 else 0
+            total_distance = stats["total_distance"]
+            print(f"Player {player_id}: Average Speed: {average_speed:.2f} km/h, Total Distance: {total_distance:.2f} m")
+        
         return output_frames
+   

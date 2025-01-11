@@ -202,32 +202,105 @@ class Googleauthapiview(APIView):
             }
         return response
     
+
 class Fileuploadview(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
-        file_obj = request.FILES['file']  
+        global PASSES_DATA  # Global variable to store passes data
+        file_obj = request.FILES.get("file")
+        if not file_obj:
+            return Response({"error": "No file uploaded."}, status=400)
 
-        media_folder = os.path.join('media')
-        os.makedirs(media_folder, exist_ok=True) 
-
-        save_file_path = os.path.abspath(os.path.join(media_folder, file_obj.name))
+        media_folder = os.path.join("media")
+        os.makedirs(media_folder, exist_ok=True)
+        save_file_path = os.path.join(media_folder, file_obj.name)
 
         try:
-            with open(save_file_path, 'wb+') as destination:
+            with open(save_file_path, "wb+") as destination:
                 for chunk in file_obj.chunks():
                     destination.write(chunk)
 
-            print(f"File saved at: {save_file_path}") 
+            print(f"File saved at: {save_file_path}")
 
-            main(save_file_path)
+            # Process the video and store the passes data
+            PASSES_DATA = main(save_file_path)
 
             return Response({
                 "message": f"File '{file_obj.name}' uploaded and processed successfully."
             }, status=200)
 
         except Exception as e:
-            print(f"Error: {e}")  
+            print(f"Error: {e}")
             return Response({"error": str(e)}, status=500)
-            
-        
+
+
+class GetStatsView(APIView):
+    def get(self, request):
+        global PASSES_DATA
+        try:
+            if PASSES_DATA is None:
+                return Response({"error": "No stats available. Please run the upload API first."}, status=400)
+
+            # Convert keys for JSON serialization
+            PASSES_DATA["passers_totals"]["team1"] = {
+                str(k): v for k, v in PASSES_DATA["passers_totals"]["team1"].items()
+            }
+            PASSES_DATA["passers_totals"]["team2"] = {
+                str(k): v for k, v in PASSES_DATA["passers_totals"]["team2"].items()
+            }
+
+            # Ensure team stats are converted properly
+            PASSES_DATA["team_stats"]["team1"] = {
+                str(k): {
+                    "average_speed": float(v.get("average_speed", 0.0)),
+                    "total_distance": float(v.get("total_distance", 0.0)),
+                }
+                for k, v in PASSES_DATA["team_stats"]["team1"].items()
+            }
+            PASSES_DATA["team_stats"]["team2"] = {
+                str(k): {
+                    "average_speed": float(v.get("average_speed", 0.0)),
+                    "total_distance": float(v.get("total_distance", 0.0)),
+                }
+                for k, v in PASSES_DATA["team_stats"]["team2"].items()
+            }
+
+            # Include ball control stats
+            ball_control_stats = PASSES_DATA.get("team_ball_control", {})
+            PASSES_DATA["team_ball_control"] = {
+                "team1": float(ball_control_stats.get("team1", 0.0)),
+                "team2": float(ball_control_stats.get("team2", 0.0)),
+            }
+
+            # Include team summary for average speed and total distance
+            team_summary = PASSES_DATA.get("team_summary", {})
+
+            # Debugging: Ensure correct team_summary values
+            print("Debug: team_summary before formatting:", team_summary)
+
+            # Do not reassign directly; validate keys before conversion
+            PASSES_DATA["team_summary"]["team1"]["average_speed"] = float(
+                team_summary.get("team1", {}).get("average_team_speed", 0.0)
+            )
+            PASSES_DATA["team_summary"]["team1"]["total_distance"] = float(
+                team_summary.get("team1", {}).get("total_team_distance", 0.0)
+            )
+            PASSES_DATA["team_summary"]["team2"]["average_speed"] = float(
+                team_summary.get("team2", {}).get("average_team_speed", 0.0)
+            )
+            PASSES_DATA["team_summary"]["team2"]["total_distance"] = float(
+                team_summary.get("team2", {}).get("total_team_distance", 0.0)
+            )
+
+            # Final debugging to ensure values are correct
+            print("Debug: Final PASSES_DATA being returned:", PASSES_DATA)
+
+            # Return the properly formatted PASSES_DATA
+            return Response(PASSES_DATA, status=200)
+
+        except Exception as e:
+            # Log error to server console for debugging
+            print(f"Error in GetStatsView: {e}")
+            return Response({"error": str(e)}, status=500)
+
