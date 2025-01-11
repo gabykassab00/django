@@ -15,7 +15,6 @@ import os
 from ML.main import main
 
 
-
 class Registerapiview(APIView):
     def post(self,request):
         data = request.data 

@@ -1,6 +1,7 @@
 
 import os
 import sys
+import base64
 
 # Get the directory containing `ML` and add it to sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -16,7 +17,7 @@ import numpy as np
 from ML.camera_movement_estimator.camera_movement_estimator import Cameramovement
 from ML.view_transformer.view_transformer import Viewtransformer
 from ML.speed_and_distance_estimator.speed_and_distance_estimator import Speedanddistanceestimator
-
+from io import BytesIO
 
 def main(video_path):
     
@@ -200,16 +201,17 @@ def main(video_path):
         print(f"{team}: Average Speed: {summary['average_team_speed']:.2f} km/h, Total Distance: {summary['total_team_distance']:.2f} m")
     # here
     print("hayde lezem tchoufa",team_summary)
-    return {
-        "passers_totals": passer_totals,
-        "total_passes_per_team": total_passes_per_team,
-        "team_ball_control": {
-        "team1": avg_team_1_control,
-        "team2": avg_team_2_control,
-    },
-        "team_stats": team_stats,  # Include stats for average speed and total distance
-        "team_summary": team_summary,
-    }
+    
+    # return {
+    #     "passers_totals": passer_totals,
+    #     "total_passes_per_team": total_passes_per_team,
+    #     "team_ball_control": {
+    #     "team1": avg_team_1_control,
+    #     "team2": avg_team_2_control,
+    # },
+    #     "team_stats": team_stats,  # Include stats for average speed and total distance
+    #     "team_summary": team_summary,
+    # }
     
     #draw output 
     
@@ -228,8 +230,37 @@ def main(video_path):
     #save video
     save_video(output_video_frames,'ML/output_videos/video_result.avi')
     
+    
+
+    
+    return {
+        "passers_totals": passer_totals,
+        "total_passes_per_team": total_passes_per_team,
+        "team_ball_control": {
+        "team1": avg_team_1_control,
+        "team2": avg_team_2_control,
+    },
+        "team_stats": team_stats,  # Include stats for average speed and total distance
+        "team_summary": team_summary,
+        # "encoded_video": encoded_video,
+        # "message": "Video processing completed successfully."
+    }
+    
+    
+    
+    
+    
+    
 if __name__ == "__main__":
     main() 
+
+
+
+
+
+
+
+
 
 
 
