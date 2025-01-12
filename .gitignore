@@ -9,3 +9,4 @@ ML/models/*.pt
 ML/output_videos/
 ML/input_videos/
 media
+.env

@@ -13,7 +13,9 @@ from google.auth.transport.requests import Request as googlereq
 from rest_framework.parsers import MultiPartParser,FormParser
 import os
 from ML.main import main
-
+from dotenv import load_dotenv
+import openai
+from rest_framework.exceptions import APIException
 
 class Registerapiview(APIView):
     def post(self,request):
@@ -299,3 +301,32 @@ class GetStatsView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=500)
 
+
+
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+class AIVIEW(APIView):
+    def post(self,request):
+        try:
+            user_query = request.data.get("query","")
+            if not user_query:
+                return Response({"error":"query is required"})
+            
+            response = openai.chat.completions.create(
+                model="gpt-3.5-tubro",
+                messages=[
+                    {"role":"system","content":"answer me in a one line answer"},
+                    {"role":"user","content":user_query}
+                ]
+            )
+            
+            answer = response.choices[0].message.content
+            
+            return Response({"answer":answer})
+        
+        except Exception as e :
+            print(f"error occured:{e}")
+            return Response({"error":str(e)})
