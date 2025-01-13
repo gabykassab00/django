@@ -302,4 +302,36 @@ class GetStatsView(APIView):
 
 
 
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+@method_decorator(csrf_exempt,name='dispatch')
+class AIVIEW(View):
+    def post(self,request):
+        try:
+            data = json.loads(request.body)
+            
+            stats = data.get("stats")
+            if not stats or not isinstance(stats,list):
+                return JsonResponse({"error"})
+            
+            response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role":"s","conent":"you are a helpful assitant"},
+                    {"role":"user","content":f"i want your full analyzation with details on these stats:{stats} "},
+                ],
+            )
+            
+            answer = response.choices[0].message.content
+            
+            return JsonResponse({"answer":answer})
+        
+        except json.JSONDecodeError:
+            return JsonResponse({"error":"invalid JSON data"})
+        
+        except Exception as e :
+            return JsonResponse({"error":str(e)})
+
 
