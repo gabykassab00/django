@@ -16,6 +16,12 @@ from ML.main import main
 from dotenv import load_dotenv
 import openai
 from rest_framework.exceptions import APIException
+from django.views import View
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+import json
+import logging
 
 class Registerapiview(APIView):
     def post(self,request):
@@ -208,7 +214,7 @@ class Fileuploadview(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
-        global PASSES_DATA  # Global variable to store passes data
+        global PASSES_DATA  
         file_obj = request.FILES.get("file")
         if not file_obj:
             return Response({"error": "No file uploaded."}, status=400)
@@ -224,7 +230,6 @@ class Fileuploadview(APIView):
 
             print(f"File saved at: {save_file_path}")
 
-            # Process the video and store the passes data
             PASSES_DATA = main(save_file_path)
 
             return Response({
@@ -243,7 +248,6 @@ class GetStatsView(APIView):
             if PASSES_DATA is None:
                 return Response({"error": "No stats available. Please run the upload API first."}, status=400)
 
-            # Convert keys for JSON serialization
             PASSES_DATA["passers_totals"]["team1"] = {
                 str(k): v for k, v in PASSES_DATA["passers_totals"]["team1"].items()
             }
@@ -251,7 +255,6 @@ class GetStatsView(APIView):
                 str(k): v for k, v in PASSES_DATA["passers_totals"]["team2"].items()
             }
 
-            # Ensure team stats are converted properly
             PASSES_DATA["team_stats"]["team1"] = {
                 str(k): {
                     "average_speed": float(v.get("average_speed", 0.0)),
@@ -267,19 +270,16 @@ class GetStatsView(APIView):
                 for k, v in PASSES_DATA["team_stats"]["team2"].items()
             }
 
-            # Include ball control stats
             ball_control_stats = PASSES_DATA.get("team_ball_control", {})
             PASSES_DATA["team_ball_control"] = {
                 "team1": float(ball_control_stats.get("team1", 0.0)),
                 "team2": float(ball_control_stats.get("team2", 0.0)),
             }
 
-            # Include team summary for average speed and total distance
             team_summary = PASSES_DATA.get("team_summary", {})
 
 
 
-            # Do not reassign directly; validate keys before conversion
             PASSES_DATA["team_summary"]["team1"]["average_speed"] = float(
                 team_summary.get("team1", {}).get("average_team_speed", 0.0)
             )
@@ -295,7 +295,6 @@ class GetStatsView(APIView):
 
 
 
-            # Return the properly formatted PASSES_DATA
             return Response(PASSES_DATA, status=200)
 
         except Exception as e:
@@ -304,29 +303,3 @@ class GetStatsView(APIView):
 
 
 
-load_dotenv()
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-class AIVIEW(APIView):
-    def post(self,request):
-        try:
-            user_query = request.data.get("query","")
-            if not user_query:
-                return Response({"error":"query is required"})
-            
-            response = openai.chat.completions.create(
-                model="gpt-3.5-tubro",
-                messages=[
-                    {"role":"system","content":"answer me in a one line answer"},
-                    {"role":"user","content":user_query}
-                ]
-            )
-            
-            answer = response.choices[0].message.content
-            
-            return Response({"answer":answer})
-        
-        except Exception as e :
-            print(f"error occured:{e}")
-            return Response({"error":str(e)})
