@@ -217,7 +217,7 @@ class Fileuploadview(APIView):
         global PASSES_DATA  
         file_obj = request.FILES.get("file")
         if not file_obj:
-            return Response({"error": "No file uploaded."}, status=400)
+            return Response({"error": "No file uploaded."})
 
         media_folder = os.path.join("media")
         os.makedirs(media_folder, exist_ok=True)
@@ -238,7 +238,7 @@ class Fileuploadview(APIView):
 
         except Exception as e:
             print(f"Error: {e}")
-            return Response({"error": str(e)}, status=500)
+            return Response({"error": str(e)})
 
 
 class GetStatsView(APIView):
@@ -246,7 +246,7 @@ class GetStatsView(APIView):
         global PASSES_DATA
         try:
             if PASSES_DATA is None:
-                return Response({"error": "No stats available. Please run the upload API first."}, status=400)
+                return Response({"error": "No stats available. Please run the upload API first."})
 
             PASSES_DATA["passers_totals"]["team1"] = {
                 str(k): v for k, v in PASSES_DATA["passers_totals"]["team1"].items()
@@ -295,10 +295,10 @@ class GetStatsView(APIView):
 
 
 
-            return Response(PASSES_DATA, status=200)
+            return Response(PASSES_DATA)
 
         except Exception as e:
-            return Response({"error": str(e)}, status=500)
+            return Response({"error": str(e)})
 
 
 logger = logging.getLogger(__name__)
@@ -309,31 +309,42 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @method_decorator(csrf_exempt,name='dispatch')
 
-
-
 class AIVIEW(View):
-
     def post(self, request):
         try:
             data = json.loads(request.body)
             logger.info(f"Received data: {data}")
 
             stats = data.get("stats")
+            action = data.get("action", "analyze")  
+
             if not stats or not isinstance(stats, list):
                 logger.error("Stats data must be a list.")
                 return JsonResponse({"error": "Stats data must be a list"})
 
             logger.info(f"Parsed stats: {stats}")
+            logger.info(f"Requested action: {action}")
+
+            if action == "analyze":
+                user_message = f"I want your full analysis, like a pundit, with details on these stats: {stats}"
+            elif action == "training":
+                user_message = (
+                    f"Using these stats: {stats}, create a detailed training program that includes specific drills, exercises, "
+                    "and actionable advice to improve player performance in areas such as speed, endurance, ball control, and passing accuracy."
+                )
+            
+            else:
+                logger.error("Invalid action provided.")
+                return JsonResponse({"error": "Invalid action"})
 
             response = openai.chat.completions.create(
-                model="gpt-3.5-turbo", 
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"i want your full analyzation like a pundit  with details on these  stats: {stats}"},
+                    {"role": "user", "content": user_message},
                 ],
             )
             logger.info(f"OpenAI Response: {response}")
-
 
             answer = response.choices[0].message.content
 
@@ -346,5 +357,4 @@ class AIVIEW(View):
         except Exception as e:
             logger.error(f"Error occurred: {str(e)}")
             return JsonResponse({"error": str(e)})
-
 
