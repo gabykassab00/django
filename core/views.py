@@ -329,8 +329,7 @@ class AIVIEW(View):
                 user_message = f"I want your full analysis, like a pundit, with details on these stats: {stats}"
             elif action == "training":
                 user_message = (
-                    f"Using these stats: {stats}, create a detailed training program that includes specific drills, exercises, "
-                    "and actionable advice to improve player performance in areas such as speed, endurance, ball control, and passing accuracy."
+                    f"Using these stats: {stats}, create a short and concise training program with key drills and exercises to improve speed, endurance, ball control, and passing accuracy."
                 )
             
             else:
