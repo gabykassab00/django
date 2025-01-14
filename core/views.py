@@ -380,3 +380,26 @@ class Addteamdataview(LoginRequiredMixin,View):
             return JsonResponse({"message":"team data added succesfully"})
         except Exception as e :
             return JsonResponse({"error":str(e)})
+        
+
+class Getteamdataview(LoginRequiredMixin,View):
+    def get(self,*args,**kwargs):
+        try:
+            user = request.user
+            team_data = Team.objects.filter(user=user)
+            
+            data = [
+                {
+                    "date":team.date,
+                    "game":team.game,
+                    "ball_control":team.ball_control,
+                    "distance_covered":team.distance_covered,
+                    "average_speed":team.average_speed,
+                    "total_passes":team.total_passes,
+                }
+                for team in team_data
+            ]
+            
+            return JsonResponse(data,safe=False)
+        except Exception as e :
+            return JsonResponse({"error":str(e)})
