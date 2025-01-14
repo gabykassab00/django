@@ -106,7 +106,8 @@ class Refreshapiview(APIView):
         return Response({
             'token':access_token
         })
-        
+
+
 class Logoutapiview(APIView):
     def post (self,request):
         
@@ -358,48 +359,40 @@ class AIVIEW(View):
         except Exception as e:
             logger.error(f"Error occurred: {str(e)}")
             return JsonResponse({"error": str(e)})
-
-
-class Addteamdataview(LoginRequiredMixin,View):
-    def post(self,request, *args, **kwargs):
-        try:
-            data = request.POST
-            user = request.user
-            
-            
-            Team.objects.create(
-                user=user,
-                date=data.get('date'),
-                game=data.get('game'),
-                ball_control=float(data.get('ball_control')),
-                distance_covered=float(data.get('distance_covered')),
-                average_speed=float(data.get('average_speed')),
-                total_passes=int(data.get('total_passes')),
-            )
-            
-            return JsonResponse({"message":"team data added succesfully"})
-        except Exception as e :
-            return JsonResponse({"error":str(e)})
         
 
-class Getteamdataview(LoginRequiredMixin,View):
-    def get(self,*args,**kwargs):
+
+class AddDataToTeam(APIView):
+    authentication_classes = [Jwtauthentication]  
+
+    def post(self, request, *args, **kwargs):
         try:
-            user = request.user
-            team_data = Team.objects.filter(user=user)
-            
-            data = [
-                {
-                    "date":team.date,
-                    "game":team.game,
-                    "ball_control":team.ball_control,
-                    "distance_covered":team.distance_covered,
-                    "average_speed":team.average_speed,
-                    "total_passes":team.total_passes,
-                }
-                for team in team_data
-            ]
-            
-            return JsonResponse(data,safe=False)
-        except Exception as e :
-            return JsonResponse({"error":str(e)})
+            user = request.user  
+            if not user or not user.is_authenticated:
+                raise exceptions.AuthenticationFailed("User must be authenticated.")
+
+            data = json.loads(request.body)
+
+            required_fields = ['date', 'game', 'ball_control', 'distance_covered', 'average_speed', 'total_passes']
+            for field in required_fields:
+                if field not in data:
+                    return Response({"error": f"Missing field: {field}"}, status=400)
+
+            team_entry = Team.objects.create(
+                user=user,  
+                date=data['date'],
+                game=data['game'],
+                ball_control=data['ball_control'],
+                distance_covered=data['distance_covered'],
+                average_speed=data['average_speed'],
+                total_passes=data['total_passes']
+            )
+
+            return Response({"message": "Data saved successfully."}, status=201)
+        except json.JSONDecodeError:
+            return Response({"error": "Invalid JSON format."}, status=400)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+
+
