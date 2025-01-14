@@ -301,37 +301,50 @@ class GetStatsView(APIView):
             return Response({"error": str(e)}, status=500)
 
 
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @method_decorator(csrf_exempt,name='dispatch')
+
+
+
 class AIVIEW(View):
-    def post(self,request):
+
+    def post(self, request):
         try:
             data = json.loads(request.body)
-            
+            logger.info(f"Received data: {data}")
+
             stats = data.get("stats")
-            if not stats or not isinstance(stats,list):
-                return JsonResponse({"error"})
-            
+            if not stats or not isinstance(stats, list):
+                logger.error("Stats data must be a list.")
+                return JsonResponse({"error": "Stats data must be a list"})
+
+            logger.info(f"Parsed stats: {stats}")
+
             response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-3.5-turbo", 
                 messages=[
-                    {"role":"s","conent":"you are a helpful assitant"},
-                    {"role":"user","content":f"i want your full analyzation with details on these stats:{stats} "},
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": f"i want your full analyzation like a pundit  with details on these  stats: {stats}"},
                 ],
             )
-            
+            logger.info(f"OpenAI Response: {response}")
+
+
             answer = response.choices[0].message.content
-            
-            return JsonResponse({"answer":answer})
-        
+
+            return JsonResponse({"answer": answer})
+
         except json.JSONDecodeError:
-            return JsonResponse({"error":"invalid JSON data"})
-        
-        except Exception as e :
-            return JsonResponse({"error":str(e)})
+            logger.error("Failed to decode JSON from the request body.")
+            return JsonResponse({"error": "Invalid JSON data"})
+
+        except Exception as e:
+            logger.error(f"Error occurred: {str(e)}")
+            return JsonResponse({"error": str(e)})
 
 
