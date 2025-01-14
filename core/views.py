@@ -22,6 +22,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import json
 import logging
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Team
 
 class Registerapiview(APIView):
     def post(self,request):
@@ -357,3 +359,24 @@ class AIVIEW(View):
             logger.error(f"Error occurred: {str(e)}")
             return JsonResponse({"error": str(e)})
 
+
+class Addteamdataview(LoginRequiredMixin,View):
+    def post(self,request, *args, **kwargs):
+        try:
+            data = request.POST
+            user = request.user
+            
+            
+            Team.objects.create(
+                user=user,
+                date=data.get('date'),
+                game=data.get('game'),
+                ball_control=float(data.get('ball_control')),
+                distance_covered=float(data.get('distance_covered')),
+                average_speed=float(data.get('average_speed')),
+                total_passes=int(data.get('total_passes')),
+            )
+            
+            return JsonResponse({"message":"team data added succesfully"})
+        except Exception as e :
+            return JsonResponse({"error":str(e)})
