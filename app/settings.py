@@ -142,8 +142,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_HOST='localhost'
 EMAIL_PORT = 1025
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']

@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -376,7 +377,7 @@ class AddDataToTeam(APIView):
             required_fields = ['date', 'game', 'ball_control', 'distance_covered', 'average_speed', 'total_passes']
             for field in required_fields:
                 if field not in data:
-                    return Response({"error": f"Missing field: {field}"}, status=400)
+                    return Response({"error": f"Missing field: {field}"})
 
             team_entry = Team.objects.create(
                 user=user,  
@@ -388,11 +389,29 @@ class AddDataToTeam(APIView):
                 total_passes=data['total_passes']
             )
 
-            return Response({"message": "Data saved successfully."}, status=201)
+            return Response({"message": "Data saved successfully."})
         except json.JSONDecodeError:
-            return Response({"error": "Invalid JSON format."}, status=400)
+            return Response({"error": "Invalid JSON format."})
         except Exception as e:
-            return Response({"error": str(e)}, status=500)
+            return Response({"error": str(e)})
 
 
+class FetchTeamData(APIView):
+    authentication_classes = [Jwtauthentication]
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            if not user or not user.is_authenticated:
+                raise exceptions.AuthenticationFailed("User must be authenticated.")
+            
+            user_team_data = Team.objects.filter(user=user).values(
+                "date", "game", "ball_control", "distance_covered", "average_speed", "total_passes"
+            )
+
+            user_team_data_list = list(user_team_data)
+
+            return Response({"data": user_team_data_list})
+        except Exception as e:
+            return Response({"error": str(e)})

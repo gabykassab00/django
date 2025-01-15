@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import Registerapiview,Loginapiview,Userapiview,Refreshapiview,Logoutapiview,Forgotapiview,Resetapiview,Googleauthapiview,Fileuploadview,GetStatsView,AIVIEW,AddDataToTeam
+from .views import Registerapiview,Loginapiview,Userapiview,Refreshapiview,Logoutapiview,Forgotapiview,Resetapiview,Googleauthapiview,Fileuploadview,GetStatsView,AIVIEW,AddDataToTeam,FetchTeamData
 urlpatterns = [
     path('register',Registerapiview.as_view()),
     path('login',Loginapiview.as_view()),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('upload',Fileuploadview.as_view()),
     path('stats', GetStatsView.as_view()),
     path('ai',AIVIEW.as_view()),
-    path('team',AddDataToTeam.as_view())
+    path('team',AddDataToTeam.as_view()),
+    path('save',FetchTeamData.as_view()),
 ]
 

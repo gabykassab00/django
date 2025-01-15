@@ -229,7 +229,7 @@ def main(video_path):
    
     #save video
     save_video(output_video_frames,'ML/output_videos/video_result.avi')
-    
+
     
 
     
