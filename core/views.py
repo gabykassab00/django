@@ -333,9 +333,15 @@ class AIVIEW(View):
                 user_message = f"I want your full analysis, like a pundit, with details on these stats: {stats}"
             elif action == "training":
                 user_message = (
-                    f"Using these stats: {stats}, create a short and concise training program with key drills and exercises to improve speed, endurance, ball control, and passing accuracy."
+                    f"Using these stats: {stats}, create a short and concise training program. "
+                    "Provide the response in the following format: For each key point, use a bullet point, and "
+                    "ensure that each bullet point appears on a new line. Focus on these areas:\n"
+                    "- Speed\n"
+                    "- Endurance\n"
+                    "- Ball Control\n"
+                    "- Passing Accuracy\n\n"
+                    "Please format the response clearly."
                 )
-            
             else:
                 logger.error("Invalid action provided.")
                 return JsonResponse({"error": "Invalid action"})

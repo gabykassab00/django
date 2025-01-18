@@ -35,13 +35,13 @@ def main(video_path):
     # video_frames = read_video('ML/input_videos/v.mp4')
     video_frames = read_video(video_path)
     
-
     
     #initialize tracker
     
-    tracker = Tracker('ML/models/best1.pt')
+    tracker = Tracker('ML/models/best10.pt')
     
     tracks = tracker.get_object_tracks(video_frames,read_from_stub=False,stub_path='ML/stubs/track_stubs.pkl')
+    
     
     
     #get object positions
