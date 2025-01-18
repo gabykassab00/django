@@ -103,15 +103,6 @@ def main(video_path):
     team_ball_control = np.array(team_ball_control)
     
     
-    
-    
-    # #save cropped image of a player
-    # for track_id,player in tracks['players'][0].items():
-    #     bbox = player['bbox']
-    #     frame = video_frames[0]
-
-    #     #cropp bbox from frame
-    #     cropped_image = frame[int(bbox[1]):int(bbox[3]),int(bbox[0]):int(bbox[2])]
     passes = tracker.track_passes(tracks,team_assigner,video_frames)
     # Print only the players who made passes
     # Initialize dictionaries to count passes
@@ -202,17 +193,6 @@ def main(video_path):
     # here
     print("hayde lezem tchoufa",team_summary)
     
-    # return {
-    #     "passers_totals": passer_totals,
-    #     "total_passes_per_team": total_passes_per_team,
-    #     "team_ball_control": {
-    #     "team1": avg_team_1_control,
-    #     "team2": avg_team_2_control,
-    # },
-    #     "team_stats": team_stats,  # Include stats for average speed and total distance
-    #     "team_summary": team_summary,
-    # }
-    
     #draw output 
     
     #draw object tracks 
@@ -240,10 +220,9 @@ def main(video_path):
         "team1": avg_team_1_control,
         "team2": avg_team_2_control,
     },
-        "team_stats": team_stats,  # Include stats for average speed and total distance
+        "team_stats": team_stats,  
         "team_summary": team_summary,
-        # "encoded_video": encoded_video,
-        # "message": "Video processing completed successfully."
+
     }
     
     
