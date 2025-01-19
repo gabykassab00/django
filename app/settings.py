@@ -163,5 +163,5 @@ REST_FRAMEWORK = {
 
 import os
 
-ML_FILES_URL = '/ML/'
-ML_FILES_ROOT = r'C:\Users\Computop\Desktop\django\ML'
+MACHINELEARNING_FILES_URL = '/ML/'
+MACHINELEARNING_FILES_ROOT = r'C:\Users\Computop\Desktop\django\ML'
