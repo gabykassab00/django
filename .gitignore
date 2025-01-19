@@ -3,4 +3,10 @@ pipfile
 __pycache__
 db.sqlite3
 .DS_Store
-
+yolov8x.pt
+ML/runs/
+ML/models/*.pt
+ML/output_videos/
+ML/input_videos/
+media
+.env
