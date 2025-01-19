@@ -258,7 +258,6 @@ class Tracker:
         previous_possession = None
         possession_threshold = 50  
 
-        # print("Starting pass tracking...")
 
         for frame_num, player_tracks in enumerate(tracks["players"]):
 

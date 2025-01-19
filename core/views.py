@@ -30,7 +30,6 @@ class Registerapiview(APIView):
     def post(self,request):
         data = request.data 
         
-        # print(f"Received data: {data}")
         
         if data['password'] != data['password_confirm']:
             raise exceptions.APIException('passwords do not match')
